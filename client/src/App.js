@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react'
+import TestStockCard from './components/testStockCard';
 
 class App extends React.Component {
 
@@ -11,7 +12,7 @@ class App extends React.Component {
 
 
   callAPI() {
-    fetch("http://localhost:9000/testAPI")
+    fetch("http://localhost:9000/testFinnhub/CLOV")
       .then(res => res.text())
       .then(res => this.setState({ apiResponse: res }));
   }
@@ -28,6 +29,7 @@ class App extends React.Component {
 
         </header>
         <p className="App-intro">{this.state.apiResponse}</p>
+        <TestStockCard/>
       </div>
     );
   }
