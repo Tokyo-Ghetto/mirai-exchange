@@ -1,6 +1,12 @@
 import React from "react";
-import {animateScroll as scroll} from 'react-scroll'
-import { FaLinkedin, FaYoutube, FaInstagram, FaFacebook, FaTwitter} from "react-icons/fa";
+import { animateScroll as scroll } from "react-scroll";
+import {
+  FaLinkedin,
+  FaYoutube,
+  FaInstagram,
+  FaFacebook,
+  FaTwitter,
+} from "react-icons/fa";
 import {
   FooterContainer,
   FooterLink,
@@ -14,13 +20,15 @@ import {
   SocialLogo,
   SocialMediaWrap,
   SocialMedia,
-  WebsiteRights
+  WebsiteRights,
+  SocialLogoImg
 } from "./FooterElements";
+import MiraiLogo from '../../images/logo.png'
 
 const Footer = () => {
-    const toggleHome = () => {
-        scroll.scrollToTop();
-    };
+  const toggleHome = () => {
+    scroll.scrollToTop();
+  };
 
   return (
     <FooterContainer>
@@ -67,7 +75,9 @@ const Footer = () => {
         </FooterLinksContainer>
         <SocialMedia>
           <SocialMediaWrap>
-            <SocialLogo to="/" onClick={toggleHome}>dolla</SocialLogo>
+            <SocialLogo to="/" onClick={toggleHome}>
+              <SocialLogoImg src={MiraiLogo}/>
+            </SocialLogo>
             <WebsiteRights>
               Mirai Exchange © {new Date().getFullYear()} All rights reserved.
             </WebsiteRights>

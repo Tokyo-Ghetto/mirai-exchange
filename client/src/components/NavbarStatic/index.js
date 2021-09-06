@@ -16,20 +16,7 @@ import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import MiraiLogo from '../../images/logo.png'
 
-const Navbar = ({ toggle }) => {
-  const [scrollNav, setScrollNav] = useState(false);
-
-  const changeNav = () => {
-    if (window.scrollY >= 80) {
-      setScrollNav(true);
-    } else {
-      setScrollNav(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", changeNav);
-  }, []);
+const NavbarStatic = ({ toggle }) => {
 
   const toggleHome = () => {
     scroll.scrollToTop();
@@ -38,7 +25,7 @@ const Navbar = ({ toggle }) => {
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
-        <Nav scrollNav={scrollNav}>
+        <Nav>
           <NavbarContainer>
             <NavLogo to="/" onClick={toggleHome}>
               <NavLogoImg src={MiraiLogo}/>
@@ -115,4 +102,4 @@ const Navbar = ({ toggle }) => {
   );
 };
 
-export default Navbar;
+export default NavbarStatic;
