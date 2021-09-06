@@ -9,15 +9,15 @@
  */
 const userList = [
     {
-        email: 'blabla@bla.com',
+        email: 'johndoe@mail.com',
         password: '123456',
-        age: 21,
+        fullname: 'John Doe'
         status: 'SUCCESS'
     },
     {
-        email: 'bleble@ble.com',
-        password: '1234567',
-        age: 22,
+        email: 'jorge221@gmail.com',
+        password: '111222333',
+        fullname: 'Jorge Vazquez'
         status: 'SUCCESS'
     }
 ]
@@ -52,6 +52,7 @@ export const registerUser = (email, password) => {
     userList.push({
         email,
         password,
+        fullname,
         status: 'PENDING_EMAIL_VALIDATION'
     })
 }
