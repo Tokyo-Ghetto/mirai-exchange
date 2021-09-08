@@ -11,8 +11,10 @@ import {
   FormButton,
   Text,
   IconImg,
+  TextRegister
 } from "./SigninElements";
 import MiraiLogo from "../../images/logo.png";
+import {Redirect} from 'react-router-dom'
 
 const SignIn = () => {
   const handleSubmit = (e) => {
@@ -33,9 +35,9 @@ const SignIn = () => {
         }),
       };
       // llamo al login
-      fetch("http://localhost:9000/auth/login", options)
-        .then((r) => r.json())
-        .then((d) => console.log(d)); // aqui tendríamos el access token
+      fetch('http://localhost:9000/auth/login', options)
+        .then(r => r.json())
+        .then(d => console.log(d)) // aqui tendríamos el access token
     } else {
       // mostrar error al usuario con el campo que no es válido
     }
@@ -57,7 +59,7 @@ const SignIn = () => {
               <FormInput type="password" name='pass' requiered />
               <FormButton type="submit">Continue</FormButton>
               <Text>Forgot password?</Text>
-              <Text>Create new account</Text>
+              <TextRegister to="/register">Create new account</TextRegister>
             </Form>
           </FormContent>
         </FormWrap>

@@ -53,25 +53,17 @@ const VerifyEmail = () => {
           </Icon>
           <FormContent>
             <Form action="#">
-              {/* <FormH1>Sign in to your account</FormH1>
-              <FormLabel htmlFor="for">Email</FormLabel>
-              <FormInput type="email" requiered />
-              <FormLabel htmlFor="for">Password</FormLabel>
-              <FormInput type="password" requiered />
-              <FormButton type="submit">Continue</FormButton>
-              <Text>Forgot password?</Text> */}
-
               {isLoading ? (
                 <FormH1>Loading...</FormH1>
               ) : isEmailValid ? (
                 <React.Fragment>
                   <FormH1>Email validated successfully</FormH1>
-                  <FormButton>Go back to login</FormButton>
+                  <FormButton to="/signin">Go back to login</FormButton>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
                   <FormH1>Invalid email</FormH1>
-                  <FormButton to='/signin'>Go back to login</FormButton>
+                  <FormButton to="/signin">Go back to login</FormButton>
                 </React.Fragment>
               )}
             </Form>

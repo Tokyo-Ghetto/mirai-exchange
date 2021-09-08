@@ -11,6 +11,7 @@ import {
   FormButton,
   Text,
   IconImg,
+  TextLogin
 } from "./RegisterElements";
 import MiraiLogo from "../../images/logo.png";
 
@@ -18,6 +19,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     // gestiono el submit del formulario
     e.preventDefault();
+    console.log('starting handleSubmit')
     if (e.target.checkValidity()) {
       // compruebo que todos los campos del formulario son validos
       if (e.target.pass.value === e.target.repeated_pass.value) {
@@ -65,8 +67,9 @@ const Register = () => {
               <FormInput type="password" name='pass' requiered />
               <FormLabel htmlFor="for">Repeat password</FormLabel>
               <FormInput type="password" name='repeated_pass' requiered />
-              <FormButton type="submit">Continue</FormButton>
+              <FormButton type="submit" name='submit' value='Continue'/>
               <Text>Forgot password?</Text>
+              <TextLogin to="/signin">Already have an account?</TextLogin>
             </Form>
           </FormContent>
         </FormWrap>

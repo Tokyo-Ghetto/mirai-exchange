@@ -59,7 +59,7 @@ export const FormContent = styled.div`
     }
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
     background: #010101;
     max-width: 400px;
     height: auto;
@@ -97,7 +97,7 @@ export const FormInput = styled.input`
     border-radius: 4px;
 `
 
-export const FormButton = styled.button`
+export const FormButton = styled.input`
     background: #01bf71;
     padding: 16px 0;
     border: none;
@@ -112,4 +112,12 @@ export const Text = styled.span`
     margin-top: 24px;
     color: #fff;
     font-size: 14px;
+`
+
+export const TextLogin = styled(Link)`
+    text-align: center;
+    margin-top: 24px;
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
 `

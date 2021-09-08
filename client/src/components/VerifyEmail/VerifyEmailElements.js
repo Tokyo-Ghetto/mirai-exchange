@@ -97,7 +97,7 @@ export const FormInput = styled.input`
     border-radius: 4px;
 `
 
-export const FormButton = styled.button`
+export const FormButton = styled(Link)`
     background: #01bf71;
     padding: 16px 0;
     border: none;
@@ -105,6 +105,9 @@ export const FormButton = styled.button`
     color: #fff;
     font-size: 20px;
     cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
 `
 
 export const Text = styled.span`

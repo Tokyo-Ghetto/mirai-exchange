@@ -59,7 +59,7 @@ export const FormContent = styled.div`
     }
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
     background: #010101;
     max-width: 400px;
     height: auto;
@@ -112,4 +112,11 @@ export const Text = styled.span`
     margin-top: 24px;
     color: #fff;
     font-size: 14px;
+`
+export const TextRegister = styled(Link)`
+    text-align: center;
+    margin-top: 24px;
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
 `

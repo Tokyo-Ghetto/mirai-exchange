@@ -7,6 +7,8 @@ import { TransitionGroup, Transition } from "react-transition-group";
 import PricingPage from "./pages/pricing";
 import RegisterPage from "./pages/register";
 import VerifyEmailPage from "./pages/verifyemail";
+import HomeExchangePage from "./pages/homeexchange";
+import ProfilePage from "./pages/profile";
 
 function App() {
   return (
@@ -16,10 +18,12 @@ function App() {
         <Route path="/signin" component={SigninPage} exact />
         <Route path="/pricing" component={PricingPage} exact />
         <Route path="/register" component={RegisterPage} exact />
-        <Route path="/verify-email" component={VerifyEmailPage} exact />
+        <Route path="/validate-email" component={VerifyEmailPage} exact />
         <Route exact path="/login">
           <Redirect to='/signin'/>
         </Route>
+        <Route path="/home" component={HomeExchangePage} exact />
+        <Route path="/profile" component={ProfilePage} exact />
       </Switch>
     </Router>
   );

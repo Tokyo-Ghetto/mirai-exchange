@@ -45,7 +45,7 @@ export const loginJWTController = (req, res) => {
 export const registerUserController = (req, res) => {
     // deconstrucción del objeto body para quedarme con sus atributos
     // email, password
-    const { email, password } = req.body;
+    const { email, password, fullname } = req.body;
     // obtengo la información de mi modelo del usuario por email
     const userInfo = getUserInfoById(email);
     // compruebo que exista el usuario y si no existe puedo darlo de alta 
@@ -53,13 +53,13 @@ export const registerUserController = (req, res) => {
         // codifico la password para guardarla en BBDD
         const passEncoded = encodePassword(password);
         // creo al usuario en la BBDD
-        registerUser(email, passEncoded);
+        registerUser(email, passEncoded, fullname);
         // genero un token random para el email
         const tokenEmailVerification = generateRandomEmailToken();
         // registro el token en la BBDD asociándolo al email
         registerToken(tokenEmailVerification, email);
         // envío el email de registro con un link apuntando al front, donde le pase el token para poder validarlo cuando el usuario haga click
-        sendMail(email, 'Verifica tu cuenta para seguir con el registro', `<a href="http://localhost:3000/validate-mail?token=${tokenEmailVerification}">Verificar</a>`)
+        sendMail(email, 'Verifica tu cuenta para seguir con el registro', `<a href="http://localhost:3000/validate-email?token=${tokenEmailVerification}">Verificar</a>`)
         //devuelvo al cliente un 201
         res.status(201).send();
     } else {
