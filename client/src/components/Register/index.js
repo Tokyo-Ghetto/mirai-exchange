@@ -37,6 +37,18 @@ const Register = () => {
             fullname: e.target.fullname.value
           }),
         };
+        const optionsCookie = {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json", // aviso a mi servidor que le envio los datos en formato JSON
+          },
+          body: JSON.stringify({
+            // Genero el body como string
+            email: e.target.email.value, // obtengo el value de un input por su name
+            password: e.target.pass.value,
+            fullname: e.target.fullname.value
+          }),
+        };
         // llamo al registro
         fetch("http://localhost:9000/auth/register", options)
           .then((r) => r.json())

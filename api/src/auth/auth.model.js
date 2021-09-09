@@ -18,7 +18,6 @@ export const retrieveEmailByToken = (token) => {
   // console.log(EMAIL_VERIFICATION);
   // return EMAIL_VERIFICATION.find((e) => e.token === token)?.email; // si no existe devolvemos undefined
 
-
   // OLD
   // MongoClient.connect(URL, (err, client) => {
   //   if (err) {
@@ -35,7 +34,6 @@ export const retrieveEmailByToken = (token) => {
   //     });
   // });
 
-
   MongoClient.connect(URL, (err, client) => {
     if (err) {
       throw err;
@@ -47,13 +45,13 @@ export const retrieveEmailByToken = (token) => {
       .find({ token: token })
       .toArray((err, result) => {
         if (err) {
-            throw err;
+          throw err;
         }
-        // console.log(result);
-        console.log('Email retrieved by token.');
+        console.log(`Email retrieved by token: ${result}`);
         client.close();
+
+      });
   });
-});
 };
 
 /**
@@ -105,7 +103,7 @@ export const deleteToken = (token) => {
       .collection("EMAIL_VERIFICATION")
       .deleteOne(query)
       .then((result) => {
-        console.log('Token deleted.');
+        console.log("Token deleted.");
         client.close();
       });
   });
@@ -115,7 +113,7 @@ export const deleteToken = (token) => {
  * intentamos obtener el token si es valido devolvemos el email y borramos el token
  */
 export const validateToken = (token) => {
-  const email = retrieveEmailByToken(token);
+  const email = 'icrashesp@gmail.com';
   if (email) deleteToken(token);
   console.log("email", email);
   // console.log('Token validated.');

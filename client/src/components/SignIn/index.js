@@ -37,7 +37,11 @@ const SignIn = () => {
       // llamo al login
       fetch('http://localhost:9000/auth/login', options)
         .then(r => r.json())
-        .then(d => console.log(d)) // aqui tendríamos el access token
+        .then(d => {
+          console.log(d)
+          window.sessionStorage.setItem('access_token', d.access_token)
+        }) // aqui tendríamos el access token
+      
     } else {
       // mostrar error al usuario con el campo que no es válido
     }

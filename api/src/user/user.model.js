@@ -138,30 +138,23 @@ MongoClient.connect(URL, (err, client) => {
     });
 });
 
-
 /**
  * Esta función va a buscar los datos a
  * mi sistema de persistencia de datos y devuelve la entidad
  * usuario que corresponda con email y password o undefined si no lo encuentra
  */
-export const getUserInfoByIdAndPassword = (userId, password) => {
-  MongoClient.connect(URL, (err, client) => {
-    if (err) {
-      throw err;
-    }
-    console.log("getUserInfoByIdAndPassword connected.");
-    client
-      .db("MiraiExchange")
-      .collection("users")
-      .find(
-        { email: userId, password: password, status: "SUCCESS" },
-        function (err, result) {
-          if (err) throw err;
-          return result;
-          client.close();
-        }
-      );
-  });
+export const getUserInfoByIdAndPassword = async (userId, password) => {
+  const client = await MongoClient.connect(URL);
+  console.log("getUserInfoByIdAndPassword connected.");
+  const user = await client
+    .db("MiraiExchange")
+    .collection("users")
+    .find({ email: userId, password: password, status: "SUCCESS" })
+    .toArray();
+  console.log("User Found.");
+  console.log(typeof user);
+  client.close();
+  return user;
 };
 
 /**
@@ -196,14 +189,13 @@ export const getUserInfoById = (userId) => {
       .find({ email: userId, status: "SUCCESS" })
       .toArray((err, result) => {
         if (err) {
-            throw err;
+          throw err;
         }
         // console.log(result);
-        console.log('Got user info by ID.');
+        console.log("Got user info by ID.");
         client.close();
+      });
   });
-  
-})
 };
 
 /**
@@ -234,7 +226,7 @@ export const registerUser = (email, password, fullname) => {
       .collection("users")
       .insertOne(newUser)
       .then((result) => {
-        console.log('User has been created.');
+        console.log("User has been created.");
         client.close();
       });
   });
@@ -256,7 +248,7 @@ export const updateUserMailVerification = (email) => {
     }
     console.log("updateUserMailVerification connected.");
     const query = {
-      email: email
+      email: email,
     };
     const updateObject = {
       $set: {
