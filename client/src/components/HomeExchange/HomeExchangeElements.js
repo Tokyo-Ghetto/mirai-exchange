@@ -16,7 +16,7 @@ display: flex;
   z-index: 1;
   height: 860px;
   width: 100%;
-  max-width: 1100px;
+  /* max-width: 1100px; */
   padding: 0 24px;
   justify-content: center;
   align-items: center;
@@ -34,6 +34,7 @@ export const HomeCard = styled.div`
     transition: all 0.2s ease-in-out;
     height: 250px;
     width: 200px;
+    margin: 0 1rem;
 
     &:hover{
         transform: scale(1.02)
@@ -59,11 +60,13 @@ export const HomeCardPrice = styled.h2`
 `;
 
 export const HomeCardPercent = styled.p`
-    color: limegreen;
+    /* color: limegreen; */
+    color: ${({ percentColor }) => (percentColor ? 'limegreen' : "red")};
     font-size: 0.9rem;
 `;
 
 export const HomeCardName = styled.p`
     color: gray;
-    font-size: 1rem
+    font-size: 1rem;
+    text-align: center;
 `;

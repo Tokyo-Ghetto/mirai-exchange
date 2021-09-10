@@ -16,6 +16,7 @@
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "finnhub": "^1.2.6",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.1.1",
     "node-sessionstorage": "^1.0.0",

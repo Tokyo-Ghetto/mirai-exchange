@@ -11,12 +11,15 @@ import {
   FormButton,
   Text,
   IconImg,
-  TextRegister
+  TextRegister,
+  FormButtonLoggedIn
 } from "./SigninElements";
 import MiraiLogo from "../../images/logo.png";
 import {Redirect} from 'react-router-dom'
+import { useState } from "react";
 
 const SignIn = () => {
+  const [isLogged, setIsLogged] = useState(false)
   const handleSubmit = (e) => {
     // gestiono el submit del formulario
     e.preventDefault();
@@ -40,6 +43,7 @@ const SignIn = () => {
         .then(d => {
           console.log(d)
           window.sessionStorage.setItem('access_token', d.access_token)
+          setIsLogged(true);
         }) // aqui tendríamos el access token
       
     } else {
@@ -55,6 +59,13 @@ const SignIn = () => {
             <IconImg src={MiraiLogo} />
           </Icon>
           <FormContent>
+            {isLogged ? (
+              <Form>
+              <FormH1>Successfully logged in.</FormH1>
+              <FormButtonLoggedIn to="/home">Redirect to Home</FormButtonLoggedIn>
+              </Form>
+            ) : (
+              <React.Fragment>
             <Form onSubmit={handleSubmit}>
               <FormH1>Sign in to your account</FormH1>
               <FormLabel htmlFor="for">Email</FormLabel>
@@ -65,6 +76,8 @@ const SignIn = () => {
               <Text>Forgot password?</Text>
               <TextRegister to="/register">Create new account</TextRegister>
             </Form>
+            </React.Fragment>
+            )}
           </FormContent>
         </FormWrap>
       </Container>

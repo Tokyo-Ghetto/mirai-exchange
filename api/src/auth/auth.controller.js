@@ -1,4 +1,3 @@
-'use strict';
 // importo del modelo la función que quiero utilizar para obtener la
 // información del usuario o registrar al usuario
 import {

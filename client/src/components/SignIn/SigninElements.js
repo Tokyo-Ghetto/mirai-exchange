@@ -107,6 +107,20 @@ export const FormButton = styled.button`
     cursor: pointer;
 `
 
+export const FormButtonLoggedIn = styled(Link)`
+    background: #01bf71;
+    padding: 16px 0;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
 export const Text = styled.span`
     text-align: center;
     margin-top: 24px;
