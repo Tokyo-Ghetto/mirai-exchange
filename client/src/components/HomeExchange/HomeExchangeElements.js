@@ -70,3 +70,8 @@ export const HomeCardName = styled.p`
     font-size: 1rem;
     text-align: center;
 `;
+
+export const Test = styled.h4`
+    font-size: 2rem;
+    color: salmon;
+`

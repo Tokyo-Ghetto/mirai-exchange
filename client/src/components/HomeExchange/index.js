@@ -1,72 +1,72 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
 import {
   HomeContainer,
   HomeWrapper,
+  // eslint-disable-next-line no-unused-vars
   HomeCard,
   HomeCardName,
   HomeCardPrice,
   HomeCardSymbol,
   HomeCardPercent,
   HomeCardPriceWrapper,
+  Test,
 } from "./HomeExchangeElements";
 import { useState } from "react";
 
 const HomeExchange = () => {
-  const [symbol, setSymbol] = useState("...");
-  const [price, setPrice] = useState("...");
-  const [percent, setPercent] = useState("...");
-  const [name, setName] = useState("...");
+  const stockList = ["NVDA"];
 
-  const stockList = ["TSLA", "AMZN", "AMD", "NVDA", "JNJ"]
+  const GetStockCard = (stock) => {
+    const [stockData, setStockData] = useState({});
 
-  useEffect(() => {
-    fetch("http://localhost:9000/stocks/JNJ")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        console.log(typeof data);
+    const stockURL = `http://localhost:9000/stocks/${stock}`;
 
-        setSymbol(data[1].ticker.toString());
-        setPrice(data[0].c.toFixed(2));
-        setPercent(data[0].dp.toFixed(2));
-        setName(data[1].name.toString());
-      });
-  }, []);
+    // const stockJSON = (fetch(stockURL).then(res => res.json()).then(data => console.log(data)))
 
-  const getStockCards = () => {
+    async function createStockData() {
+        let response = await fetch(stockURL)
+        let data = await response.json()
+        setStockData(data)
+        console.log(stockData)
+    }
+
+    useEffect(() => {
+        createStockData()
+    },[])
+
+
+
     return (
-      <HomeCard stock={"TSLA"}>
-            <HomeCardSymbol>{symbol}</HomeCardSymbol>
-            <HomeCardPriceWrapper>
-              <HomeCardPrice>{price}</HomeCardPrice>
-              <HomeCardPercent percentColor={percent >= 0 ? true : false}>
-                {percent}%
-              </HomeCardPercent>
-            </HomeCardPriceWrapper>
-            <HomeCardName>{name}</HomeCardName>
-          </HomeCard>
-    )
-  }
+      <HomeCard>
+        <HomeCardSymbol>{stockData[1].ticker}</HomeCardSymbol>
+        <HomeCardPriceWrapper>
+          <HomeCardPrice>{stockData[0].c.toFixed(2)}</HomeCardPrice>
+          <HomeCardPercent percentColor={stockData[0].dp >= 0 ? true : false}>
+          {stockData[0].dp.toFixed(2)}%
+          </HomeCardPercent>
+        </HomeCardPriceWrapper>
+        <HomeCardName>{stockData[1].name}</HomeCardName>
+      </HomeCard>
+    );
+  };
+
+  // let prueba = [];
+  // const GetCards = () => {
+  //   for (let i = 0; i <= stockList.length - 1; i++) {
+  //     prueba.push(GetStockCard(stockList[i]));
+  //   }
+  //   return prueba;
+  // };
 
   return (
     <>
       <HomeContainer>
-        <HomeWrapper>
-          {/* <HomeCard stock={"TSLA"}>
-            <HomeCardSymbol>{symbol}</HomeCardSymbol>
-            <HomeCardPriceWrapper>
-              <HomeCardPrice>{price}</HomeCardPrice>
-              <HomeCardPercent percentColor={percent >= 0 ? true : false}>
-                {percent}%
-              </HomeCardPercent>
-            </HomeCardPriceWrapper>
-            <HomeCardName>{name}</HomeCardName>
-          </HomeCard> */}
-          {getStockCards()}
-        </HomeWrapper>
+        <HomeWrapper>{GetStockCard("NVDA")}</HomeWrapper>
       </HomeContainer>
     </>
   );
 };
+
 
 export default HomeExchange;
