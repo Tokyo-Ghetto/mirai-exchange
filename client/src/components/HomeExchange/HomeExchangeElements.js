@@ -14,31 +14,35 @@ export const HomeContainer = styled.div`
 export const HomeWrapper = styled.div`
 display: flex;
   z-index: 1;
-  height: 860px;
+  height: auto;
+  min-height: 860px;
   width: 100%;
   /* max-width: 1100px; */
   padding: 0 24px;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  margin-top: 80px;
 `;
 
-export const HomeCard = styled.div`
+export const HomeCard = styled(Link)`
     background: #fff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-    padding: 30px;
+    padding: 30px 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     transition: all 0.2s ease-in-out;
     height: 250px;
     width: 200px;
-    margin: 0 1rem;
+    margin: 1rem;
+    text-decoration: none;
 
     &:hover{
-        transform: scale(1.02)
-        transition: all 0.2s ease-in-out;
+        transform: scale(1.05);
+        transition: all 0.1s ease-in-out;
         cursor: pointer;
     }
 `;

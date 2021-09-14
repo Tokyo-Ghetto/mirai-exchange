@@ -15,6 +15,7 @@ import VerifyEmailPage from "./pages/verifyemail";
 import HomeExchangePage from "./pages/homeexchange";
 import ProfilePage from "./pages/profile";
 import PrivateRoute from "./components/PrivateRoute";
+import StockPage from "./pages/stock";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <PrivateRoute>
           <Route path="/profile" component={ProfilePage} exact />
           <Route path="/home" component={HomeExchangePage} exact />
+          <Route path="/stocks/:id" component={StockPage} />
         </PrivateRoute>
       </Switch>
     </Router>
