@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 
 export const StockContainer = styled.div`
-  color: #fff;
+  color: #010606;
   /* background: ${({ lightBg }) => (lightBg ? "#f9f9f9" : "#010606")}; */
   background: #f9f9f9;
 
@@ -12,20 +12,107 @@ export const StockContainer = styled.div`
 `;
 
 export const StockWrapper = styled.div`
-display: flex;
+  display: flex;
+  flex-direction: column;
   z-index: 1;
   height: auto;
   min-height: 860px;
   width: 100%;
   /* max-width: 1100px; */
   padding: 0 24px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
   margin-top: 80px;
 `;
 
-export const Test = styled.h1`
-color: salmon;
-font-size: 2rem
-`
+export const StockTitleContainer = styled.div``;
+
+export const StockTitle = styled.h1`
+  font-size: 3rem;
+`;
+
+export const StockChart = styled.div`
+  width: 66vw;
+  height: 50vh;
+`;
+
+export const StockBodyContainer = styled.div`
+  display: flex;
+  margin: 1rem 0;
+`;
+
+export const StockDetailContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 66vw;
+`;
+
+export const StockDetailWrapper = styled.div`
+  text-align: center;
+`;
+
+export const StockDetailTitle = styled.h3`
+  margin: 8px;
+`;
+
+export const StockDetailSubtitle = styled.p``;
+
+export const StockTradeContainer = styled.div`
+  width: 33vh;
+  height: 50vh;
+`;
+
+export const StockTradeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+  height: 100%;
+`;
+
+export const StockPrice = styled.h2``;
+
+export const StockPercent = styled.p`
+  color: ${({ percentColor }) => (percentColor ? "limegreen" : "red")};
+`;
+
+export const StockBuyButton = styled.button`
+  border-radius: 50px;
+  background: #01bf71;
+  white-space: nowrap;
+  padding: 10px 22px;
+  color: #010606;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  width: 8vw;
+  height: 6vh;
+  margin: 2rem;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: #010606;
+  }
+`;
+
+export const StockSellButton = styled.button`
+  border-radius: 50px;
+  background: red;
+  white-space: nowrap;
+  padding: 10px 22px;
+  color: #010606;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  width: 8vw;
+  height: 6vh;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: #010606;
+  }
+`;

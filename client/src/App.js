@@ -32,7 +32,7 @@ function App() {
         <PrivateRoute>
           <Route path="/profile" component={ProfilePage} exact />
           <Route path="/home" component={HomeExchangePage} exact />
-          <Route path="/stocks/:id" component={StockPage} />
+          <Route path="/stocks/:symbol" component={StockPage} />
         </PrivateRoute>
       </Switch>
     </Router>
