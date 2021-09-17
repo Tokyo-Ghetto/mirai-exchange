@@ -153,8 +153,9 @@ export const getUserInfoByIdAndPassword = async (userId, password) => {
     .toArray();
   console.log("User Found.");
   console.log(typeof user);
-  client.close();
   return user;
+  client.close();
+
 };
 
 /**
@@ -219,6 +220,7 @@ export const registerUser = (email, password, fullname) => {
       fullname: fullname,
       email: email,
       password: password,
+      balance: "100000",
       status: "PENDING_EMAIL_VALIDATION",
     };
     client

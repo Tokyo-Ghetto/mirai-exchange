@@ -48,6 +48,7 @@ const SignIn = () => {
       
     } else {
       // mostrar error al usuario con el campo que no es válido
+      console.log('error klk')
     }
   };
 

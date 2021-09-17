@@ -33,7 +33,7 @@ const NavbarExchange = ({ toggle }) => {
               <FaBars />
             </MobileIcon>
             <NavMenu>
-              <NavItem>
+              {/* <NavItem>
                 <NavLinks
                   to="home"
                   smooth={true}
@@ -80,7 +80,7 @@ const NavbarExchange = ({ toggle }) => {
                 >
                   Search
                 </NavLinks>
-              </NavItem>
+              </NavItem> */}
             </NavMenu>
             <NavBtn>
               <NavBtnLink

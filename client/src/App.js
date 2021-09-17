@@ -16,26 +16,29 @@ import HomeExchangePage from "./pages/homeexchange";
 import ProfilePage from "./pages/profile";
 import PrivateRoute from "./components/PrivateRoute";
 import StockPage from "./pages/stock";
+import { ModalProvider } from "styled-react-modal";
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/signin" component={SigninPage} exact />
-        <Route path="/pricing" component={PricingPage} exact />
-        <Route path="/register" component={RegisterPage} exact />
-        <Route path="/validate-email" component={VerifyEmailPage} exact />
-        <Route exact path="/login">
-          <Redirect to="/signin" />
-        </Route>
-        <PrivateRoute>
-          <Route path="/profile" component={ProfilePage} exact />
-          <Route path="/home" component={HomeExchangePage} exact />
-          <Route path="/stocks/:symbol" component={StockPage} />
-        </PrivateRoute>
-      </Switch>
-    </Router>
+    <ModalProvider>
+      <Router>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/signin" component={SigninPage} exact />
+          <Route path="/pricing" component={PricingPage} exact />
+          <Route path="/register" component={RegisterPage} exact />
+          <Route path="/validate-email" component={VerifyEmailPage} exact />
+          <Route exact path="/login">
+            <Redirect to="/signin" />
+          </Route>
+          <PrivateRoute>
+            <Route path="/profile" component={ProfilePage} exact />
+            <Route path="/home" component={HomeExchangePage} exact />
+            <Route path="/stocks/:symbol" component={StockPage} />
+          </PrivateRoute>
+        </Switch>
+      </Router>
+    </ModalProvider>
   );
 }
 

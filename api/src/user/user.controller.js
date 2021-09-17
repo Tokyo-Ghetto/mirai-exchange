@@ -14,5 +14,10 @@
      // borro la passwod para no exponerla en mi API y no enviarsela a los clientes
      delete userInfo.password;
      // Envio al cliente que realizo la petición los datos del usuario
+     console.log("User info sent.")
      res.send(userInfo);
+ }
+
+ export const buyStockController = (req,res) => {
+
  }

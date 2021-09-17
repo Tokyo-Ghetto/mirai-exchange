@@ -17,7 +17,7 @@ import { encodePassword, generateRandomEmailToken } from "./auth.utils.js";
 
 import { sendMail } from "../adapters/mail.js"; // importo mi adaptador de emails
 
-import storage from 'node-sessionstorage'
+import storage from "node-sessionstorage";
 /**
  * Este controller se encarga de validar el user y el password de un usuario
  * y si está todo OK genera un JWT que se lo devuelve al usuario
@@ -32,19 +32,21 @@ export const loginJWTController = (req, res) => {
   console.log(passEncoded);
   // obtengo la información de mi modelo del usuario por email
   const userInfo = getUserInfoByIdAndPassword(email, passEncoded);
-  console.log(userInfo);
-  // compruebo que exista el usuario y que las password coincidan
-  if (userInfo !== undefined) {
-    // generar un token JWT
-    const token = jwt.sign({ user: email }, secret);
-    //devolverselo al usuario en una propiedad llamada access_token
-    // res.cookie("access_token", token,  { expires: new Date(Date.now() + 2000000), httpOnly: true });
-    res.send({
-      access_token: token,
-    });
-  } else {
-    res.status(404).send("Invalid username/password.");
-  }
+  userInfo.then(function (result) {
+    console.log(result);
+    // compruebo que exista el usuario y que las password coincidan
+    if (result !== null && result.length) {
+      // generar un token JWT
+      const token = jwt.sign({ user: email }, secret);
+      //devolverselo al usuario en una propiedad llamada access_token
+      res.send({
+        access_token: token,
+        result
+      });
+    } else {
+      res.status(404).send("Invalid username/password.");
+    }
+  });
 };
 
 /**

@@ -1,5 +1,6 @@
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
+import Modal from "styled-react-modal";
 
 export const StockContainer = styled.div`
   color: #010606;
@@ -115,4 +116,42 @@ export const StockSellButton = styled.button`
     background: #fff;
     color: #010606;
   }
+`;
+
+export const StockModal = Modal.styled`
+  width: 20rem;
+  height: 20rem;
+  background-color: white;
+`;
+
+export const StockModalWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+
+export const StockModalInfo = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  flex-direction: row;
+`;
+
+export const StockModalTitle = styled.h3``;
+
+export const StockModalPrice = styled.h3``;
+
+export const StockModalQuantityWrapper = styled.div``;
+
+export const StockModalQuantityTitle = styled.p``;
+
+export const StockModalQuantityInput = styled.input``;
+
+export const StockModalButton = styled.button`
+  background-color: lightgray;
+  width: 6vw;
+  height: 3vh;
 `;

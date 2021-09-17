@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import StockPageChart from "../StockPageChart/index";
+import Modal from "styled-react-modal";
 import {
   StockContainer,
   StockWrapper,
@@ -20,6 +21,15 @@ import {
   StockTradeWrapper,
   StockBodyContainer,
   StockTitleContainer,
+  StockModal,
+  StockModalPrice,
+  StockModalQuantityTitle,
+  StockModalQuantityInput,
+  StockModalQuantityWrapper,
+  StockModalTitle,
+  StockModalWrapper,
+  StockModalButton,
+  StockModalInfo,
 } from "./StockElements";
 
 const Stock = () => {
@@ -27,17 +37,39 @@ const Stock = () => {
   const { symbol } = useParams();
 
   const [stockData, setStockData] = useState("...");
+  const [candleData, setCandleData] = useState("...");
   const [isLoading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggleModal(e) {
+    setIsOpen(!isOpen);
+  }
 
   const stockURL = `http://localhost:9000/stocks/${symbol}/full`;
+  const candleURL = `http://localhost:9000/stocks/${symbol}/candles/60`;
 
-  const formatCash = (n) => {
+  const formatMarketCap = (n) => {
     if (n < 1e3) return n;
     if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(2) + "K";
     if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(2) + "M";
     if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(2) + "B";
     if (n >= 1e12) return +(n / 1e12).toFixed(2) + "T";
   };
+
+  async function createCandleData() {
+    fetch(candleURL, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((json) => {
+          setCandleData(json);
+        });
+      }
+    });
+  }
 
   async function createStockData() {
     fetch(stockURL, {
@@ -49,7 +81,6 @@ const Stock = () => {
       if (response.ok) {
         response.json().then((json) => {
           setStockData(json);
-          console.log(stockData);
           setLoading(false);
         });
       }
@@ -57,9 +88,9 @@ const Stock = () => {
   }
 
   useEffect(() => {
+    createCandleData();
     createStockData();
   }, []);
-
 
   if (isLoading === true) {
     return (
@@ -68,6 +99,14 @@ const Stock = () => {
       </StockContainer>
     );
   } else {
+    let convertedEpoch = candleData[0].t.map(function (element) {
+      return element * 1000;
+    });
+
+    convertedEpoch = convertedEpoch.map(function (element) {
+      return new Date(element).toISOString().slice(0, 10);
+    });
+
     return (
       <>
         <StockContainer>
@@ -77,7 +116,7 @@ const Stock = () => {
             </StockTitleContainer>
             <StockBodyContainer>
               <StockChart>
-                <StockPageChart></StockPageChart>
+                {StockPageChart(convertedEpoch, candleData[0].c)}
               </StockChart>
               <StockTradeContainer>
                 <StockTradeWrapper>
@@ -95,7 +134,30 @@ const Stock = () => {
                       : stockData[0].dp}
                     %
                   </StockPercent>
-                  <StockBuyButton>BUY</StockBuyButton>
+                  <StockBuyButton onClick={toggleModal}>BUY</StockBuyButton>
+                  <StockModal
+                    isOpen={isOpen}
+                    onBackgroundClick={toggleModal}
+                    onEscapeKeydown={toggleModal}
+                  >
+                    <StockModalWrapper>
+                      <StockModalInfo>
+                        <StockModalTitle>Buy {symbol}</StockModalTitle>
+                        <StockModalPrice>
+                          {stockData[0].c.toFixed(2)}$
+                        </StockModalPrice>
+                      </StockModalInfo>
+                      <StockModalQuantityWrapper>
+                        <StockModalQuantityTitle>
+                          Quantity
+                        </StockModalQuantityTitle>
+                        <StockModalQuantityInput></StockModalQuantityInput>
+                      </StockModalQuantityWrapper>
+                      <StockModalButton onClick={toggleModal}>
+                        Buy
+                      </StockModalButton>
+                    </StockModalWrapper>
+                  </StockModal>
                   <StockSellButton>SELL</StockSellButton>
                 </StockTradeWrapper>
               </StockTradeContainer>
@@ -104,7 +166,7 @@ const Stock = () => {
               <StockDetailWrapper>
                 <StockDetailTitle>Market Cap</StockDetailTitle>
                 <StockDetailSubtitle>
-                  {formatCash(
+                  {formatMarketCap(
                     stockData[0].c * stockData[1].shareOutstanding * 1000000
                   )}
                 </StockDetailSubtitle>
