@@ -17,6 +17,7 @@ export const validateJWTAuth = (req, res, next) => {
         // para que las siguientes rutas no se tengan que preocupar
         // de validar tokens JWT, guardo el id del usuario en la req
         req.email = jwtDecoded.user;
+        console.log(req.email)
         next();
     }catch(err){
         console.log(err);

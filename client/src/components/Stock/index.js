@@ -30,6 +30,10 @@ import {
   StockModalWrapper,
   StockModalButton,
   StockModalInfo,
+  StockModalBalanceNumber,
+  StockModalBalanceTitle,
+  StockModalBalanceWrapper,
+  StockModalQuantityTotal,
 } from "./StockElements";
 
 const Stock = () => {
@@ -40,6 +44,8 @@ const Stock = () => {
   const [candleData, setCandleData] = useState("...");
   const [isLoading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState("...");
+  const [quantity, setQuantity] = useState(100);
 
   function toggleModal(e) {
     setIsOpen(!isOpen);
@@ -47,6 +53,7 @@ const Stock = () => {
 
   const stockURL = `http://localhost:9000/stocks/${symbol}/full`;
   const candleURL = `http://localhost:9000/stocks/${symbol}/candles/60`;
+  const buyURL = `http://localhost:9000/user/buy`;
 
   const formatMarketCap = (n) => {
     if (n < 1e3) return n;
@@ -87,8 +94,77 @@ const Stock = () => {
     });
   }
 
+  let bearer = "Bearer " + sessionStorage.getItem("access_token");
+
+  async function getUserData() {
+    fetch("http://localhost:9000/user/", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: bearer,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((json) => {
+          setUserData(json);
+          console.log(userData);
+        });
+      }
+    });
+  }
+
+
+  const handleBuy = (e) => {
+    e.preventDefault();
+    fetch(buyURL, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: bearer,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        console.log('Done.')
+      }
+    });
+  }
+
+
+  
+
+
+  const handleSubmit = (e) => {
+    // gestiono el submit del formulario
+    e.preventDefault();
+    if (e.target.checkValidity()) {
+      // compruebo que todos los campos del formulario son validos
+      // genero el objeto options para llamar al login
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json", // aviso a mi servidor que le envio los datos en formato JSON
+        },
+        body: JSON.stringify({
+          // Genero el body como string
+          email: e.target.email.value, // obtengo el value de un input por su name
+          password: e.target.pass.value,
+        }),
+      };
+      // llamo al login
+      fetch("http://localhost:9000/auth/login", options)
+        .then((r) => r.json())
+        .then((d) => {
+          console.log(d);
+          window.sessionStorage.setItem("access_token", d.access_token);
+        }); // aqui tendríamos el access token
+    } else {
+      // mostrar error al usuario con el campo que no es válido
+    }
+  };
+
   useEffect(() => {
     createCandleData();
+    getUserData();
     createStockData();
   }, []);
 
@@ -151,9 +227,27 @@ const Stock = () => {
                         <StockModalQuantityTitle>
                           Quantity
                         </StockModalQuantityTitle>
-                        <StockModalQuantityInput></StockModalQuantityInput>
+                        <StockModalQuantityInput
+                          type="number"
+                          min={100}
+                          placeholder="100"
+                          step="100"
+                          value={quantity}
+                          onInput={(e) => setQuantity(e.target.value)}
+                        ></StockModalQuantityInput>
+                        <StockModalQuantityTotal>
+                          {(stockData[0].c.toFixed(2) * quantity).toFixed(2)}
+                        </StockModalQuantityTotal>
                       </StockModalQuantityWrapper>
-                      <StockModalButton onClick={toggleModal}>
+                      <StockModalBalanceWrapper>
+                        <StockModalBalanceTitle>
+                          Current balance:
+                        </StockModalBalanceTitle>
+                        <StockModalBalanceNumber>
+                          {userData[0]["balance"]}
+                        </StockModalBalanceNumber>
+                      </StockModalBalanceWrapper>
+                      <StockModalButton onClick={handleBuy}>
                         Buy
                       </StockModalButton>
                     </StockModalWrapper>

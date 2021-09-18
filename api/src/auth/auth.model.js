@@ -15,25 +15,6 @@ const URL =
  * Obtener el email por token
  */
 export const retrieveEmailByToken = (token) => {
-  // console.log(EMAIL_VERIFICATION);
-  // return EMAIL_VERIFICATION.find((e) => e.token === token)?.email; // si no existe devolvemos undefined
-
-  // OLD
-  // MongoClient.connect(URL, (err, client) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   console.log("retrieveEmailByToken connected.");
-  //   client
-  //     .db("MiraiExchange")
-  //     .collection("EMAIL_VERIFICATION")
-  //     .find({ token: token }, function (err, result) {
-  //       if (err) throw err;
-  //       return result.email;
-  //       client.close();
-  //     });
-  // });
-
   MongoClient.connect(URL, (err, client) => {
     if (err) {
       throw err;
@@ -49,10 +30,10 @@ export const retrieveEmailByToken = (token) => {
         }
         console.log(`Email retrieved by token: ${result}`);
         client.close();
-
       });
   });
 };
+
 
 /**
  * registrar token asociado al email
@@ -113,7 +94,7 @@ export const deleteToken = (token) => {
  * intentamos obtener el token si es valido devolvemos el email y borramos el token
  */
 export const validateToken = (token) => {
-  const email = 'icrashesp@gmail.com';
+  const email = "icrashesp@gmail.com";
   if (email) deleteToken(token);
   console.log("email", email);
   // console.log('Token validated.');

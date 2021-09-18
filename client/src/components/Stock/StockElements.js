@@ -144,14 +144,34 @@ export const StockModalTitle = styled.h3``;
 
 export const StockModalPrice = styled.h3``;
 
-export const StockModalQuantityWrapper = styled.div``;
+export const StockModalQuantityWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export const StockModalQuantityTitle = styled.p``;
 
-export const StockModalQuantityInput = styled.input``;
+export const StockModalQuantityInput = styled.input`
+  margin: 0.5rem;
+`;
 
 export const StockModalButton = styled.button`
   background-color: lightgray;
   width: 6vw;
   height: 3vh;
 `;
+
+export const StockModalBalanceWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export const StockModalBalanceTitle = styled.h3``;
+
+export const StockModalBalanceNumber = styled.h3``;
+
+export const StockModalQuantityTotal = styled.h5`
+
+`

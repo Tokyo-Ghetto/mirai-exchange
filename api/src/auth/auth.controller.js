@@ -26,7 +26,7 @@ import storage from "node-sessionstorage";
 export const loginJWTController = (req, res) => {
   // deconstrucción del objeto body para quedarme con sus atributos
   // email, password
-  const { email, password } = req.body;
+  const { email, password, fullname, balance, portfolio } = req.body;
   // codifico la password para hacer la query con lo que hay en BBDD
   const passEncoded = encodePassword(password);
   console.log(passEncoded);
@@ -40,8 +40,7 @@ export const loginJWTController = (req, res) => {
       const token = jwt.sign({ user: email }, secret);
       //devolverselo al usuario en una propiedad llamada access_token
       res.send({
-        access_token: token,
-        result
+        access_token: token
       });
     } else {
       res.status(404).send("Invalid username/password.");

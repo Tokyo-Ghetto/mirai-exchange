@@ -155,7 +155,6 @@ export const getUserInfoByIdAndPassword = async (userId, password) => {
   console.log(typeof user);
   return user;
   client.close();
-
 };
 
 /**
@@ -163,40 +162,17 @@ export const getUserInfoByIdAndPassword = async (userId, password) => {
  * mi sistema de persistencia de datos y devuelve la entidad
  * usuario que corresponda con email o undefined si no lo encuentra
  */
-export const getUserInfoById = (userId) => {
-  // MongoClient.connect(URL, (err, client) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   console.log("getUserInfoById connected.");
-  //   client
-  //     .db("MiraiExchange")
-  //     .collection("users")
-  //     .find({ email: userId, status: "SUCCESS" }, function (err, result) {
-  //       if (err) throw err;
-  //       return result;
-  //       client.close();
-  //     });
-  // });
-
-  MongoClient.connect(URL, (err, client) => {
-    if (err) {
-      throw err;
-    }
-    console.log("getUserInfoById connected.");
-    client
-      .db("MiraiExchange")
-      .collection("users")
-      .find({ email: userId, status: "SUCCESS" })
-      .toArray((err, result) => {
-        if (err) {
-          throw err;
-        }
-        // console.log(result);
-        console.log("Got user info by ID.");
-        client.close();
-      });
-  });
+export const getUserInfoById = async (userId) => {
+  const client = await MongoClient.connect(URL);
+  console.log("getUserInfoById connected.");
+  const user = await client
+    .db("MiraiExchange")
+    .collection("users")
+    .find({ email: userId, status: "SUCCESS" })
+    .toArray();
+  console.log(`Got user info by ID: ${typeof user} ${JSON.stringify(user)}`);
+  return user;
+  client.close();
 };
 
 /**
@@ -263,6 +239,40 @@ export const updateUserMailVerification = (email) => {
       .updateOne(query, updateObject)
       .then((result) => {
         console.log(`${email} has been updated.`);
+        client.close();
+      });
+  });
+};
+
+export const setUpdatedBalance = () => {};
+
+// export const setUpdatedPortfolio = (email, portfolio) => {
+export const setUpdatedPortfolio = (email) => {
+  const userEmail = email
+  MongoClient.connect(URL, (err, client) => {
+    if (err) {
+      throw err;
+    }
+    console.log("setUpdatedPortfolio connected.");
+    const query = {
+      email: userEmail,
+    };
+    const newPortfolio = {
+      $set: {
+        portfolio: {
+          AAPL: 300,
+          BBIG: 1000,
+          AMZN: 100,
+          // PASAR A MONGO UN JSON CON EL PORTFOLIO YA MODIFICADO, SUMANDO Y/O CREANDO AL PORTFOLIO YA EXISTENTE DEL USUARIO
+        },
+      },
+    };
+    client
+      .db("MiraiExchange")
+      .collection("users")
+      .updateOne(query, newPortfolio)
+      .then((result) => {
+        console.log(`Portfolio has been updated.`);
         client.close();
       });
   });
