@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import Modal from "styled-react-modal";
+import bullGIF from "../../images/bull.gif";
 
 export const StockContainer = styled.div`
   color: #010606;
@@ -20,14 +21,23 @@ export const StockWrapper = styled.div`
   min-height: 860px;
   width: 100%;
   /* max-width: 1100px; */
-  padding: 0 24px;
+  padding: 1rem;
   margin-top: 80px;
 `;
 
-export const StockTitleContainer = styled.div``;
+export const StockTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+`;
 
 export const StockTitle = styled.h1`
   font-size: 3rem;
+`;
+
+export const StockSubtitle = styled.h3`
+  font-size: 1.5rem;
+  margin-left: 1rem;
 `;
 
 export const StockChart = styled.div`
@@ -38,6 +48,7 @@ export const StockChart = styled.div`
 export const StockBodyContainer = styled.div`
   display: flex;
   margin: 1rem 0;
+  justify-content: space-around;
 `;
 
 export const StockDetailContainer = styled.div`
@@ -77,7 +88,7 @@ export const StockPercent = styled.p`
 
 export const StockBuyButton = styled.button`
   border-radius: 50px;
-  background: #01bf71;
+  background: #fff;
   white-space: nowrap;
   padding: 10px 22px;
   color: #010606;
@@ -92,17 +103,17 @@ export const StockBuyButton = styled.button`
 
   &:hover {
     transition: all 0.2s ease-in-out;
-    background: #fff;
+    background: #01bf71;
     color: #010606;
   }
 `;
 
 export const StockSellButton = styled.button`
   border-radius: 50px;
-  background: red;
+  background-color: #fff;
   white-space: nowrap;
   padding: 10px 22px;
-  color: #010606;
+  color: black;
   font-size: 16px;
   outline: none;
   cursor: pointer;
@@ -113,14 +124,14 @@ export const StockSellButton = styled.button`
 
   &:hover {
     transition: all 0.2s ease-in-out;
-    background: #fff;
+    background-color: red;
     color: #010606;
   }
 `;
 
 export const StockModal = Modal.styled`
-  width: 20rem;
-  height: 20rem;
+  width: 23rem;
+  height: 23rem;
   background-color: white;
 `;
 
@@ -157,9 +168,12 @@ export const StockModalQuantityInput = styled.input`
 `;
 
 export const StockModalButton = styled.button`
-  background-color: lightgray;
+  background-color: black;
+  color: white;
   width: 6vw;
   height: 3vh;
+  border-radius: 5px;
+  border: 0;
 `;
 
 export const StockModalBalanceWrapper = styled.div`
@@ -172,6 +186,30 @@ export const StockModalBalanceTitle = styled.h3``;
 
 export const StockModalBalanceNumber = styled.h3``;
 
-export const StockModalQuantityTotal = styled.h5`
+export const StockModalQuantityTotal = styled.h5``;
 
-`
+export const StockModalPopupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+`;
+
+export const StockModalPopupText = styled.h3`
+  font-size: 1.5rem;
+  padding: 0 1rem;
+  text-align: center;
+`;
+
+export const StockModalPopupImg = styled.image`
+  width: 200px;
+  height: 200px;
+`;
+
+export const StockModalPopupButton = styled(StockModalButton)`
+  width: 40%;
+  height: 10%;
+`;

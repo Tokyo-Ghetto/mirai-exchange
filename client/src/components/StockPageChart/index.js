@@ -65,7 +65,7 @@ const StockPageChart = (time, data) => {
             },
             y: {
               grid: {
-                display: false,
+                display: true,
               },
             },
           },

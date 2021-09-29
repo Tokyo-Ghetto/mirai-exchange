@@ -34,36 +34,39 @@ import {
   StockModalBalanceTitle,
   StockModalBalanceWrapper,
   StockModalQuantityTotal,
+  StockSubtitle,
+  StockModalPopupWrapper,
+  StockModalPopupText,
+  StockModalPopupImg,
+  StockModalPopupButton,
 } from "./StockElements";
+import bullGIF from "../../images/bull.gif";
 
 const Stock = () => {
   const stockList = [];
   const { symbol } = useParams();
 
-  const [stockData, setStockData] = useState("...");
-  const [candleData, setCandleData] = useState("...");
-  const [isLoading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
-  const [userData, setUserData] = useState("...");
-  const [quantity, setQuantity] = useState(100);
-
-  function toggleModal(e) {
-    setIsOpen(!isOpen);
-  }
-
+  const bearer = "Bearer " + sessionStorage.getItem("access_token");
   const stockURL = `http://localhost:9000/stocks/${symbol}/full`;
   const candleURL = `http://localhost:9000/stocks/${symbol}/candles/60`;
   const buyURL = `http://localhost:9000/user/buy`;
 
-  const formatMarketCap = (n) => {
-    if (n < 1e3) return n;
-    if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(2) + "K";
-    if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(2) + "M";
-    if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(2) + "B";
-    if (n >= 1e12) return +(n / 1e12).toFixed(2) + "T";
-  };
+  const [stockData, setStockData] = useState("...");
+  const [candleData, setCandleData] = useState("...");
+  const [isLoading, setLoading] = useState(true);
+  const [isOpenBuy, setIsOpenBuy] = useState(false);
+  const [isOpenSell, setIsOpenSell] = useState(false);
+  const [userData, setUserData] = useState("...");
+  const [quantity, setQuantity] = useState(100);
+  const [updated, setUpdated] = useState({
+    balance: 0,
+    portfolio: [],
+  });
+  const [currentShares, setCurrentShares] = useState(0);
+  const [isBought, setIsBought] = useState(false);
+  const [isSold, setIsSold] = useState(false);
 
-  async function createCandleData() {
+  useEffect(() => {
     fetch(candleURL, {
       method: "GET",
       headers: {
@@ -76,9 +79,7 @@ const Stock = () => {
         });
       }
     });
-  }
 
-  async function createStockData() {
     fetch(stockURL, {
       method: "GET",
       headers: {
@@ -92,11 +93,7 @@ const Stock = () => {
         });
       }
     });
-  }
 
-  let bearer = "Bearer " + sessionStorage.getItem("access_token");
-
-  async function getUserData() {
     fetch("http://localhost:9000/user/", {
       method: "GET",
       headers: {
@@ -105,70 +102,216 @@ const Stock = () => {
       },
     }).then((response) => {
       if (response.ok) {
-        response.json().then((json) => {
-          setUserData(json);
-          console.log(userData);
+        response.json().then((userData) => {
+          setUserData(userData);
+          setUpdated({
+            balance: userData[0]["balance"],
+            portfolio: userData[0]["portfolio"],
+          });
         });
       }
     });
+  }, [bearer, stockURL, candleURL]);
+
+  useEffect(() => {
+    if (updated.balance > 0 && updated.portfolio.length > 0) {
+      fetch(buyURL, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: bearer,
+        },
+        body: JSON.stringify(updated),
+        //hacer fetch con updated actualizado
+      }).then((response) => {
+        if (response.ok) {
+          console.log("Done.");
+        }
+      });
+      const indexStock = updated.portfolio.findIndex(
+        (e) => e[symbol] !== undefined
+      );
+      setCurrentShares(updated.portfolio[indexStock][symbol]);
+    }
+  }, [updated]);
+
+  function toggleModalBuy(e) {
+    setIsOpenBuy(!isOpenBuy);
   }
 
+  function toggleModalSell(e) {
+    setIsOpenSell(!isOpenSell);
+  }
+
+  const formatMarketCap = (n) => {
+    if (n < 1e3) return n;
+    if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(2) + "K";
+    if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(2) + "M";
+    if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(2) + "B";
+    if (n >= 1e12) return +(n / 1e12).toFixed(2) + "T";
+  };
 
   const handleBuy = (e) => {
     e.preventDefault();
-    fetch(buyURL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: bearer,
-      },
-    }).then((response) => {
-      if (response.ok) {
-        console.log('Done.')
+    if (
+      updated["balance"] > 0 &&
+      stockData[0]["c"] * quantity < updated["balance"]
+    ) {
+      const indexStock = updated.portfolio.findIndex(
+        (e) => e[symbol] !== undefined
+      );
+      if (indexStock >= 0) {
+        updated.portfolio[indexStock][symbol] += quantity;
+        setUpdated({
+          balance: updated["balance"] - stockData[0]["c"] * quantity,
+          portfolio: updated.portfolio.slice(),
+        });
+        setIsBought(true);
+      } else {
+        setUpdated({
+          balance: updated["balance"] - stockData[0]["c"] * quantity,
+          portfolio: [
+            ...updated["portfolio"],
+            { [stockData[1]["ticker"]]: quantity },
+          ],
+        });
+        setIsBought(true);
       }
-    });
-  }
-
-
-  
-
-
-  const handleSubmit = (e) => {
-    // gestiono el submit del formulario
-    e.preventDefault();
-    if (e.target.checkValidity()) {
-      // compruebo que todos los campos del formulario son validos
-      // genero el objeto options para llamar al login
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json", // aviso a mi servidor que le envio los datos en formato JSON
-        },
-        body: JSON.stringify({
-          // Genero el body como string
-          email: e.target.email.value, // obtengo el value de un input por su name
-          password: e.target.pass.value,
-        }),
-      };
-      // llamo al login
-      fetch("http://localhost:9000/auth/login", options)
-        .then((r) => r.json())
-        .then((d) => {
-          console.log(d);
-          window.sessionStorage.setItem("access_token", d.access_token);
-        }); // aqui tendríamos el access token
     } else {
-      // mostrar error al usuario con el campo que no es válido
+      console.log("Not enough balance in your account.");
     }
   };
 
-  useEffect(() => {
-    createCandleData();
-    getUserData();
-    createStockData();
-  }, []);
+  const handleSell = (e) => {
+    e.preventDefault();
+    const indexStock = updated.portfolio.findIndex(
+      (e) => e[symbol] !== undefined
+    );
+    if (indexStock >= 0) {
+      if (updated.portfolio[indexStock][symbol] === quantity) {
+        updated.portfolio[indexStock][symbol] = 0;
+      } else if (updated.portfolio[indexStock][symbol] > quantity) {
+        updated.portfolio[indexStock][symbol] -= quantity;
+      } else if (updated.portfolio[indexStock][symbol] < quantity) {
+        console.log("Insufficient shares to sell.");
+      }
+      setUpdated({
+        balance: updated["balance"] + stockData[0]["c"] * quantity,
+        portfolio: updated.portfolio.slice(),
+      });
+      setIsSold(true);
+    } else {
+      console.log("indexStock error: Stock doesn't exist.");
+    }
+  };
 
-  if (isLoading === true) {
+  const popupBuy = () => {
+    if (isBought === true) {
+      return (
+        <StockModalPopupWrapper>
+          <StockModalPopupText>
+            You've succesfully purchased {quantity} shares of {symbol} at{" "}
+            {stockData[0].c.toFixed(2)}$
+          </StockModalPopupText>
+          <StockModalPopupButton
+            onClick={function () {
+              window.location.reload();
+            }}
+          >
+            Back to {symbol}
+          </StockModalPopupButton>
+        </StockModalPopupWrapper>
+      );
+    } else if (isBought === false) {
+      return (
+        <StockModalWrapper>
+          <StockModalInfo>
+            <StockModalTitle>Buy {symbol}</StockModalTitle>
+            <StockModalPrice>{stockData[0].c.toFixed(2)}$</StockModalPrice>
+          </StockModalInfo>
+          <StockModalQuantityWrapper>
+            <StockModalQuantityTitle>Quantity</StockModalQuantityTitle>
+            <StockModalQuantityInput
+              type="number"
+              min={100}
+              placeholder="100"
+              step="100"
+              value={quantity}
+              onInput={(e) => setQuantity(parseInt(e.target.value))}
+            ></StockModalQuantityInput>
+            <StockModalQuantityTotal>
+              {(stockData[0].c.toFixed(2) * quantity).toFixed(2)}
+            </StockModalQuantityTotal>
+          </StockModalQuantityWrapper>
+          <StockModalBalanceWrapper>
+            <StockModalBalanceTitle>Current balance:</StockModalBalanceTitle>
+            <StockModalBalanceNumber>{updated.balance}</StockModalBalanceNumber>
+          </StockModalBalanceWrapper>
+          <StockModalBalanceWrapper>
+            <StockModalBalanceTitle>Current shares:</StockModalBalanceTitle>
+            <StockModalBalanceNumber>{currentShares}</StockModalBalanceNumber>
+          </StockModalBalanceWrapper>
+          <StockModalButton onClick={handleBuy}>Buy</StockModalButton>
+        </StockModalWrapper>
+      );
+    }
+  };
+
+  const popupSell = () => {
+    if (isSold === true) {
+      return (
+        <StockModalPopupWrapper>
+          <StockModalPopupText>
+            You've succesfully sold {quantity} shares of {symbol} at{" "}
+            {stockData[0].c.toFixed(2)}$
+          </StockModalPopupText>
+          <StockModalPopupButton
+            onClick={function () {
+              window.location.reload();
+            }}
+          >
+            Back to {symbol}
+          </StockModalPopupButton>
+        </StockModalPopupWrapper>
+      );
+    } else if (isSold === false) {
+      return (
+        <StockModalWrapper>
+          <StockModalInfo>
+            <StockModalTitle>Sell {symbol}</StockModalTitle>
+            <StockModalPrice>{stockData[0].c.toFixed(2)}$</StockModalPrice>
+          </StockModalInfo>
+          <StockModalQuantityWrapper>
+            <StockModalQuantityTitle>Quantity</StockModalQuantityTitle>
+            <StockModalQuantityInput
+              type="number"
+              min={100}
+              placeholder="100"
+              step="100"
+              value={quantity}
+              onInput={(e) => setQuantity(parseInt(e.target.value))}
+            ></StockModalQuantityInput>
+            <StockModalQuantityTotal>
+              {(stockData[0].c.toFixed(2) * quantity).toFixed(2)}
+            </StockModalQuantityTotal>
+          </StockModalQuantityWrapper>
+          <StockModalBalanceWrapper>
+            <StockModalBalanceTitle>Current balance:</StockModalBalanceTitle>
+            <StockModalBalanceNumber>{updated.balance}</StockModalBalanceNumber>
+          </StockModalBalanceWrapper>
+          <StockModalBalanceWrapper>
+            <StockModalBalanceTitle>Current shares:</StockModalBalanceTitle>
+            <StockModalBalanceNumber>{currentShares}</StockModalBalanceNumber>
+          </StockModalBalanceWrapper>
+          <StockModalButton onClick={handleSell}>Buy</StockModalButton>
+        </StockModalWrapper>
+      );
+    }
+  };
+
+  if (isLoading) {
     return (
       <StockContainer>
         <StockWrapper></StockWrapper>
@@ -184,11 +327,12 @@ const Stock = () => {
     });
 
     return (
-      <>
+      <React.Fragment>
         <StockContainer>
           <StockWrapper>
             <StockTitleContainer>
-              <StockTitle>{stockData[1].ticker}</StockTitle>
+              <StockTitle>{stockData[1]["ticker"]}</StockTitle>
+              <StockSubtitle>{stockData[1]["name"]}</StockSubtitle>
             </StockTitleContainer>
             <StockBodyContainer>
               <StockChart>
@@ -210,49 +354,24 @@ const Stock = () => {
                       : stockData[0].dp}
                     %
                   </StockPercent>
-                  <StockBuyButton onClick={toggleModal}>BUY</StockBuyButton>
+                  <StockBuyButton onClick={toggleModalBuy}>BUY</StockBuyButton>
                   <StockModal
-                    isOpen={isOpen}
-                    onBackgroundClick={toggleModal}
-                    onEscapeKeydown={toggleModal}
+                    isOpen={isOpenBuy}
+                    onBackgroundClick={toggleModalBuy}
+                    onEscapeKeydown={toggleModalBuy}
                   >
-                    <StockModalWrapper>
-                      <StockModalInfo>
-                        <StockModalTitle>Buy {symbol}</StockModalTitle>
-                        <StockModalPrice>
-                          {stockData[0].c.toFixed(2)}$
-                        </StockModalPrice>
-                      </StockModalInfo>
-                      <StockModalQuantityWrapper>
-                        <StockModalQuantityTitle>
-                          Quantity
-                        </StockModalQuantityTitle>
-                        <StockModalQuantityInput
-                          type="number"
-                          min={100}
-                          placeholder="100"
-                          step="100"
-                          value={quantity}
-                          onInput={(e) => setQuantity(e.target.value)}
-                        ></StockModalQuantityInput>
-                        <StockModalQuantityTotal>
-                          {(stockData[0].c.toFixed(2) * quantity).toFixed(2)}
-                        </StockModalQuantityTotal>
-                      </StockModalQuantityWrapper>
-                      <StockModalBalanceWrapper>
-                        <StockModalBalanceTitle>
-                          Current balance:
-                        </StockModalBalanceTitle>
-                        <StockModalBalanceNumber>
-                          {userData[0]["balance"]}
-                        </StockModalBalanceNumber>
-                      </StockModalBalanceWrapper>
-                      <StockModalButton onClick={handleBuy}>
-                        Buy
-                      </StockModalButton>
-                    </StockModalWrapper>
+                    {popupBuy()}
                   </StockModal>
-                  <StockSellButton>SELL</StockSellButton>
+                  <StockSellButton onClick={toggleModalSell}>
+                    SELL
+                  </StockSellButton>
+                  <StockModal
+                    isOpen={isOpenSell}
+                    onBackgroundClick={toggleModalSell}
+                    onEscapeKeydown={toggleModalSell}
+                  >
+                    {popupSell()}
+                  </StockModal>
                 </StockTradeWrapper>
               </StockTradeContainer>
             </StockBodyContainer>
@@ -293,7 +412,7 @@ const Stock = () => {
             {/* <Test>{GetStockCard("AAPL")}</Test> */}
           </StockWrapper>
         </StockContainer>
-      </>
+      </React.Fragment>
     );
   }
 };

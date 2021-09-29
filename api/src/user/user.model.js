@@ -244,11 +244,13 @@ export const updateUserMailVerification = (email) => {
   });
 };
 
-export const setUpdatedBalance = () => {};
+export const setUpdatedBalance = () => { };
 
 // export const setUpdatedPortfolio = (email, portfolio) => {
-export const setUpdatedPortfolio = (email) => {
+export const setUpdatedPortfolio = (email, updated) => {
   const userEmail = email
+  const userUpdated = updated
+  console.log(userUpdated)
   MongoClient.connect(URL, (err, client) => {
     if (err) {
       throw err;
@@ -259,12 +261,8 @@ export const setUpdatedPortfolio = (email) => {
     };
     const newPortfolio = {
       $set: {
-        portfolio: {
-          AAPL: 300,
-          BBIG: 1000,
-          AMZN: 100,
-          // PASAR A MONGO UN JSON CON EL PORTFOLIO YA MODIFICADO, SUMANDO Y/O CREANDO AL PORTFOLIO YA EXISTENTE DEL USUARIO
-        },
+        portfolio: updated.portfolio,
+        balance: updated.balance
       },
     };
     client

@@ -29,8 +29,7 @@ const HeroSection = () => {
         <HeroH1>Trading Made Easy</HeroH1>
         {/* Add an animation for Easy to change to Modern, Elegant, Worldwide, Secure */}
         <HeroP>
-          Sign up for a new account today and receive $250 in credit towards
-          your next payment.
+          Sign up for a new account today and receive up to $50 in free stocks.
         </HeroP>
         <HeroBtnWrapper>
           <Button

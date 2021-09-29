@@ -21,7 +21,8 @@ export const retrieveUserInfoCtrl = async (req, res) => {
 
 export const stockBuyController = async (req, res) => {
     const setBalance = setUpdatedBalance()
-    const setPortfolio = setUpdatedPortfolio(req.email)
+    const setPortfolio = setUpdatedPortfolio(req.email, req.body);
+    res.send();
 };
 
 export const stockSellController = async (req, res) => {
