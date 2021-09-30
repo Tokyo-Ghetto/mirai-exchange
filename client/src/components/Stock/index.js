@@ -133,7 +133,13 @@ const Stock = () => {
       const indexStock = updated.portfolio.findIndex(
         (e) => e[symbol] !== undefined
       );
-      setCurrentShares(updated.portfolio[indexStock][symbol]);
+      if(updated.portfolio[indexStock]){
+        setCurrentShares(updated.portfolio[indexStock][symbol]);
+        console.log((updated.portfolio[indexStock][symbol]))
+      }else{
+        setCurrentShares(0)
+      }
+
     }
   }, [updated]);
 
