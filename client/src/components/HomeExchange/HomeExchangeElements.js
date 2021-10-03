@@ -2,9 +2,8 @@ import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 
 export const HomeContainer = styled.div`
-  color: #fff;
-  /* background: ${({ lightBg }) => (lightBg ? "#f9f9f9" : "#010606")}; */
-  background: #f9f9f9;
+  color: ${(props) => props.theme.fontColor};
+  background: ${(props) => props.theme.backgroundColor};
 
   @media screen and (max-width: 768px) {
     padding: 100px 0;
@@ -26,7 +25,8 @@ display: flex;
 `;
 
 export const HomeCard = styled(Link)`
-    background: #fff;
+    background: ${(props) => props.theme.secondaryBackgroundColor};
+    color: ${(props) => props.theme.fontColor};
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -48,7 +48,7 @@ export const HomeCard = styled(Link)`
 `;
 
 export const HomeCardSymbol = styled.h3`
-    color: black;
+    color: ${(props) => props.theme.fontColor};
     font-size: 1.25rem;
 `;
 
@@ -59,7 +59,7 @@ export const HomeCardPriceWrapper = styled.div`
 `
 
 export const HomeCardPrice = styled.h2`
-    color: black;
+    color: ${(props) => props.theme.fontColor};
     font-size: 2.5rem;
 `;
 
@@ -70,7 +70,7 @@ export const HomeCardPercent = styled.p`
 `;
 
 export const HomeCardName = styled.p`
-    color: gray;
+    color: color: ${(props) => props.theme.fontColor};
     font-size: 1rem;
     text-align: center;
 `;

@@ -24,12 +24,13 @@ const Profile = () => {
       headers: {
         Accept: "application/json",
         Authorization: bearer,
-        mode: 'cors'
+        mode: "cors",
       },
     }).then((response) => {
       if (response.ok) {
         response.json().then((json) => {
           setUserData(json);
+          setIsLoading(false);
           console.log(userData);
         });
       } else {
@@ -40,30 +41,36 @@ const Profile = () => {
 
   const GetPortfolioCard = (portfolioStockIndex) => {
     const [symbol, setSymbol] = useState("AAPL");
-
-    // useEffect(() => {
-    //   setSymbol(Object.keys(userData[0].portfolio[portfolioStockIndex]).join())
-    // },[userData])
+    const [stockData, setStockData] = useState("...");
 
     const stockURL = `http://localhost:9000/stocks/${symbol}/full`;
 
-    const [stockData, setStockData] = useState("...");
-
-    useEffect(() => {
+    async function createStockData() {
       fetch(stockURL, {
         method: "GET",
         headers: {
           Accept: "application/json",
+          mode: "cors",
         },
       }).then((response) => {
         if (response.ok) {
           response.json().then((json) => {
             setStockData(json);
+            console.log(stockData);
             // setLoading(false);
           });
         }
       });
-    }, [symbol]);
+    }
+
+    function createStockSymbol() {
+      setSymbol(Object.keys(userData[0].portfolio[portfolioStockIndex]).join());
+    }
+
+    useEffect(() => {
+      createStockSymbol();
+      createStockData();
+    }, []);
 
     return (
       <ProfilePortfolioCard>
@@ -72,15 +79,15 @@ const Profile = () => {
             {stockData[1].ticker}
           </ProfilePortfolioCardStock>
           <ProfilePortfolioCardPercent>
-            {stockData[0].dp}%
+            {stockData[0].dp.toFixed(2)}%
           </ProfilePortfolioCardPercent>
         </ProfilePortfolioCardLeftContainer>
         <ProfilePortfolioCardRightContainer>
           <ProfilePortfolioCardShares>
-            {userData[0].portfolio[6].AAPL} Shares
+            {userData[0].portfolio[portfolioStockIndex].AAPL} Shares
           </ProfilePortfolioCardShares>
           <ProfilePortfolioCardTotal>
-            {userData[0].portfolio[6].AAPL * stockData[0].c}
+            {userData[0].portfolio[portfolioStockIndex].AAPL * stockData[0].c}
           </ProfilePortfolioCardTotal>
           <ProfilePortfolioCardPercentChange>
             13.2%
@@ -103,7 +110,7 @@ const Profile = () => {
       <ProfileContainer>
         <ProfileWrapper>
           <ProfilePortfolioContainer>
-            {/* {GetPortfolioCard(3)} */}
+            {GetPortfolioCard(6)}
           </ProfilePortfolioContainer>
         </ProfileWrapper>
       </ProfileContainer>

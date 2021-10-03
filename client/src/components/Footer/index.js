@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { animateScroll as scroll } from "react-scroll";
 import {
   FaLinkedin,
@@ -21,14 +22,20 @@ import {
   SocialMediaWrap,
   SocialMedia,
   WebsiteRights,
-  SocialLogoImg
+  SocialLogoImg,
+  FooterLanguage
 } from "./FooterElements";
 import MiraiLogo from '../../images/logo.png'
 
 const Footer = () => {
+  const { t, i18n } = useTranslation();
   const toggleHome = () => {
     scroll.scrollToTop();
   };
+
+  const handleClick = (lang) => {
+    i18n.changeLanguage(lang);
+  }
 
   return (
     <FooterContainer>
@@ -36,40 +43,37 @@ const Footer = () => {
         <FooterLinksContainer>
           <FooterLinksWrapper>
             <FooterLinkItems>
-              <FooterLinkTitle>About Us</FooterLinkTitle>
-              <FooterLink to="/signin">How it works</FooterLink>
-              <FooterLink to="/signin">Testimonials</FooterLink>
-              <FooterLink to="/signin">Careers</FooterLink>
-              <FooterLink to="/signin">Investors</FooterLink>
-              <FooterLink to="/signin">Terms of Service</FooterLink>
+              <FooterLinkTitle>{t('About us')}</FooterLinkTitle>
+              <FooterLink to="/signin">{t('How it works')}</FooterLink>
+              <FooterLink to="/signin">{t('Testimonials')}</FooterLink>
+              <FooterLink to="/signin">{t('Careers')}</FooterLink>
+              <FooterLink to="/signin">{t('Investors')}</FooterLink>
+              <FooterLink to="/signin">{t('Terms of Service')}</FooterLink>
             </FooterLinkItems>
           </FooterLinksWrapper>
           <FooterLinksWrapper>
             <FooterLinkItems>
-              <FooterLinkTitle>Contact Us</FooterLinkTitle>
-              <FooterLink to="/signin">Contact</FooterLink>
-              <FooterLink to="/signin">Support</FooterLink>
-              <FooterLink to="/signin">Destinations</FooterLink>
-              <FooterLink to="/signin">Sponsorships</FooterLink>
+              <FooterLinkTitle>{t('Contact Us')}</FooterLinkTitle>
+              <FooterLink to="/signin">{t('Contact')}</FooterLink>
+              <FooterLink to="/signin">{t('Support')}</FooterLink>
+              <FooterLink to="/signin">{t('Sponsorships')}</FooterLink>
             </FooterLinkItems>
           </FooterLinksWrapper>
           <FooterLinksWrapper>
             <FooterLinkItems>
-              <FooterLinkTitle>Videos</FooterLinkTitle>
-              <FooterLink to="/signin">Submit Video</FooterLink>
-              <FooterLink to="/signin">Ambassadors</FooterLink>
-              <FooterLink to="/signin">Agency</FooterLink>
-              <FooterLink to="/signin">Influencer</FooterLink>
-            </FooterLinkItems>
-          </FooterLinksWrapper>
-          <FooterLinksWrapper>
-            <FooterLinkItems>
-              <FooterLinkTitle>Social Media</FooterLinkTitle>
+              <FooterLinkTitle>{t('Social Media')}</FooterLinkTitle>
               <FooterLink to="/signin">Instagram</FooterLink>
               <FooterLink to="/signin">Facebook</FooterLink>
               <FooterLink to="/signin">Youtube</FooterLink>
               <FooterLink to="/signin">Twitter</FooterLink>
               <FooterLink to="/signin">Linkedin</FooterLink>
+            </FooterLinkItems>
+          </FooterLinksWrapper>
+          <FooterLinksWrapper>
+            <FooterLinkItems>
+              <FooterLinkTitle>{t('Language')}</FooterLinkTitle>
+              <FooterLanguage onClick={() => handleClick('en')}>English</FooterLanguage>
+              <FooterLanguage onClick={() => handleClick('es')}>Español</FooterLanguage>
             </FooterLinkItems>
           </FooterLinksWrapper>
         </FooterLinksContainer>
@@ -79,7 +83,7 @@ const Footer = () => {
               <SocialLogoImg src={MiraiLogo}/>
             </SocialLogo>
             <WebsiteRights>
-              Mirai Exchange © {new Date().getFullYear()} All rights reserved.
+              Mirai Exchange © {new Date().getFullYear()} {t('All rights reserved')}
             </WebsiteRights>
             <SocialIcons>
               <SocialIconLink

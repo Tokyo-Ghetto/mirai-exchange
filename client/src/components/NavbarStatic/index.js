@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { animateScroll as scroll } from "react-scroll";
 import {
   Nav,
@@ -17,6 +18,7 @@ import { IconContext } from "react-icons/lib";
 import MiraiLogo from '../../images/logo.png'
 
 const NavbarStatic = ({ toggle }) => {
+  const { t, i18n } = useTranslation();
 
   const toggleHome = () => {
     scroll.scrollToTop();
@@ -43,7 +45,7 @@ const NavbarStatic = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  About
+                  {t('About')}
                 </NavLinks>
               </NavItem>
               <NavItem>
@@ -55,7 +57,7 @@ const NavbarStatic = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  Discover
+                  {t('Discover')}
                 </NavLinks>
               </NavItem>
               <NavItem>
@@ -67,7 +69,7 @@ const NavbarStatic = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  Pricing
+                  {t('Pricing')}
                 </NavLinks>
               </NavItem>
               <NavItem>
@@ -79,7 +81,7 @@ const NavbarStatic = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  Sign Up
+                  {t('Sign Up')}
                 </NavLinks>
               </NavItem>
             </NavMenu>
@@ -92,7 +94,7 @@ const NavbarStatic = ({ toggle }) => {
                 exact="true"
                 offset={-80}
               >
-                Sign In
+                {t('Sign In')}
               </NavBtnLink>
             </NavBtn>
           </NavbarContainer>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import {
   FormContent,
   Container,
@@ -19,6 +20,7 @@ import {Redirect} from 'react-router-dom'
 import { useState } from "react";
 
 const SignIn = () => {
+  const { t, i18n } = useTranslation();
   const [isLogged, setIsLogged] = useState(false)
   const handleSubmit = (e) => {
     // gestiono el submit del formulario
@@ -61,20 +63,20 @@ const SignIn = () => {
           <FormContent>
             {isLogged ? (
               <Form>
-              <FormH1>Successfully logged in.</FormH1>
-              <FormButtonLoggedIn to="/home">Redirect to Home</FormButtonLoggedIn>
+              <FormH1>{t('Successfully logged in')}</FormH1>
+              <FormButtonLoggedIn to="/home">{t('Redirect to Home')}</FormButtonLoggedIn>
               </Form>
             ) : (
               <React.Fragment>
             <Form onSubmit={handleSubmit}>
-              <FormH1>Sign in to your account</FormH1>
-              <FormLabel htmlFor="for">Email</FormLabel>
+              <FormH1>{t('Sign in to your account')}</FormH1>
+              <FormLabel htmlFor="for">{t('Email')}</FormLabel>
               <FormInput type="email" name='email' requiered />
-              <FormLabel htmlFor="for">Password</FormLabel>
+              <FormLabel htmlFor="for">{t('Password')}</FormLabel>
               <FormInput type="password" name='pass' requiered />
-              <FormButton type="submit">Continue</FormButton>
-              <Text>Forgot password?</Text>
-              <TextRegister to="/register">Create new account</TextRegister>
+              <FormButton type="submit">{t('Continue')}</FormButton>
+              <Text>{t('Forgot password?')}</Text>
+              <TextRegister to="/register">{t('Create new account')}</TextRegister>
             </Form>
             </React.Fragment>
             )}

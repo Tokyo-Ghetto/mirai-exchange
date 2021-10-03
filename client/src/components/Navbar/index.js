@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { animateScroll as scroll } from "react-scroll";
 import {
   Nav,
@@ -18,6 +19,7 @@ import MiraiLogo from '../../images/logo.png'
 
 const Navbar = ({ toggle }) => {
   const [scrollNav, setScrollNav] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const changeNav = () => {
     if (window.scrollY >= 80) {
@@ -56,7 +58,7 @@ const Navbar = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  About
+                  {t('About')}
                 </NavLinks>
               </NavItem>
               <NavItem>
@@ -68,7 +70,7 @@ const Navbar = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  Discover
+                  {t('Discover')}
                 </NavLinks>
               </NavItem>
               <NavItem>
@@ -80,7 +82,7 @@ const Navbar = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  Pricing
+                  {t('Pricing')}
                 </NavLinks>
               </NavItem>
               <NavItem>
@@ -92,7 +94,7 @@ const Navbar = ({ toggle }) => {
                   exact="true"
                   offset={-80}
                 >
-                  Sign Up
+                  {t('Sign Up')}
                 </NavLinks>
               </NavItem>
             </NavMenu>
@@ -105,7 +107,7 @@ const Navbar = ({ toggle }) => {
                 exact="true"
                 offset={-80}
               >
-                Sign In
+                {t('Sign In')}
               </NavBtnLink>
             </NavBtn>
           </NavbarContainer>

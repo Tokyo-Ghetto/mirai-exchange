@@ -9,7 +9,7 @@ import {
 import Home from "./pages/index";
 import SigninPage from "./pages/signin";
 import { TransitionGroup, Transition } from "react-transition-group";
-import PricingPage from "./pages/pricing";
+import PricingPage from "./pages/legal";
 import RegisterPage from "./pages/register";
 import VerifyEmailPage from "./pages/verifyemail";
 import HomeExchangePage from "./pages/homeexchange";
@@ -17,6 +17,7 @@ import ProfilePage from "./pages/profile";
 import PrivateRoute from "./components/PrivateRoute";
 import StockPage from "./pages/stock";
 import { ModalProvider } from "styled-react-modal";
+import LegalPage from "./pages/legal";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/pricing" component={PricingPage} exact />
           <Route path="/register" component={RegisterPage} exact />
           <Route path="/validate-email" component={VerifyEmailPage} exact />
+          <Route path="/legal" component={LegalPage} exact />
           <Route exact path="/login">
             <Redirect to="/signin" />
           </Route>

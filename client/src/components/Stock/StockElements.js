@@ -4,9 +4,8 @@ import Modal from "styled-react-modal";
 import bullGIF from "../../images/bull.gif";
 
 export const StockContainer = styled.div`
-  color: #010606;
-  /* background: ${({ lightBg }) => (lightBg ? "#f9f9f9" : "#010606")}; */
-  background: #f9f9f9;
+  color: ${(props) => props.theme.fontColor};
+  background: ${(props) => props.theme.backgroundColor};
 
   @media screen and (max-width: 768px) {
     padding: 100px 0;
@@ -88,10 +87,10 @@ export const StockPercent = styled.p`
 
 export const StockBuyButton = styled.button`
   border-radius: 50px;
-  background: #fff;
+  background: ${(props) => props.theme.fontColor};
   white-space: nowrap;
   padding: 10px 22px;
-  color: #010606;
+  color: ${(props) => props.theme.backgroundColor};
   font-size: 16px;
   outline: none;
   cursor: pointer;
@@ -110,10 +109,10 @@ export const StockBuyButton = styled.button`
 
 export const StockSellButton = styled.button`
   border-radius: 50px;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.fontColor};
   white-space: nowrap;
   padding: 10px 22px;
-  color: black;
+  color: ${(props) => props.theme.backgroundColor};
   font-size: 16px;
   outline: none;
   cursor: pointer;

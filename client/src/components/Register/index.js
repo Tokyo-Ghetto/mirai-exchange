@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import {
   FormContent,
   Container,
@@ -16,6 +17,7 @@ import {
 import MiraiLogo from "../../images/logo.png";
 
 const Register = () => {
+  const { t, i18n } = useTranslation();
   const handleSubmit = (e) => {
     // gestiono el submit del formulario
     e.preventDefault();
@@ -70,18 +72,18 @@ const Register = () => {
           </Icon>
           <FormContent>
             <Form onSubmit={handleSubmit}>
-              <FormH1>Create a new account</FormH1>
-              <FormLabel htmlFor="for">Full name</FormLabel>
+              <FormH1>{t('Create a new account')}</FormH1>
+              <FormLabel htmlFor="for">{t('Full name')}</FormLabel>
               <FormInput type="name" name='fullname' requiered />
-              <FormLabel htmlFor="for">Email</FormLabel>
+              <FormLabel htmlFor="for">{t('Email')}</FormLabel>
               <FormInput type="email" name='email' requiered />
-              <FormLabel htmlFor="for">Password</FormLabel>
+              <FormLabel htmlFor="for">{t('Password')}</FormLabel>
               <FormInput type="password" name='pass' requiered />
-              <FormLabel htmlFor="for">Repeat password</FormLabel>
+              <FormLabel htmlFor="for">{t('Repeat password')}</FormLabel>
               <FormInput type="password" name='repeated_pass' requiered />
               <FormButton type="submit" name='submit' value='Continue'/>
-              <Text>Forgot password?</Text>
-              <TextLogin to="/signin">Already have an account?</TextLogin>
+              <Text>{t('Forgot password?')}</Text>
+              <TextLogin to="/signin">{t('Already have an account?')}</TextLogin>
             </Form>
           </FormContent>
         </FormWrap>

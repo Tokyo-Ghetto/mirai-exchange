@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { animateScroll as scroll } from "react-scroll";
 import {
   Nav,
@@ -17,6 +18,7 @@ import { IconContext } from "react-icons/lib";
 import MiraiLogo from "../../images/logo.png";
 
 const NavbarExchange = ({ toggle }) => {
+  const { t, i18n } = useTranslation();
   const toggleHome = () => {
     scroll.scrollToTop();
   };
@@ -91,7 +93,7 @@ const NavbarExchange = ({ toggle }) => {
                 exact="true"
                 offset={-80}
               >
-                Profile
+                {t('Profile')}
               </NavBtnLink>
             </NavBtn>
           </NavbarContainer>

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import StockPageChart from "../StockPageChart/index";
@@ -43,6 +44,8 @@ import {
 import bullGIF from "../../images/bull.gif";
 
 const Stock = () => {
+    const [theme, setTheme] = useState("dark");
+  const { t, i18n } = useTranslation();
   const stockList = [];
   const { symbol } = useParams();
 
@@ -218,7 +221,7 @@ const Stock = () => {
       return (
         <StockModalPopupWrapper>
           <StockModalPopupText>
-            You've succesfully purchased {quantity} shares of {symbol} at{" "}
+          {t('Youve succesfully purchased')} {quantity} {t('shares of')} {symbol} {t('at')} {" "}
             {stockData[0].c.toFixed(2)}$
           </StockModalPopupText>
           <StockModalPopupButton
@@ -226,7 +229,7 @@ const Stock = () => {
               window.location.reload();
             }}
           >
-            Back to {symbol}
+            {t('Back to')} {symbol}
           </StockModalPopupButton>
         </StockModalPopupWrapper>
       );
@@ -234,11 +237,11 @@ const Stock = () => {
       return (
         <StockModalWrapper>
           <StockModalInfo>
-            <StockModalTitle>Buy {symbol}</StockModalTitle>
+            <StockModalTitle>{t('Buy')} {symbol}</StockModalTitle>
             <StockModalPrice>{stockData[0].c.toFixed(2)}$</StockModalPrice>
           </StockModalInfo>
           <StockModalQuantityWrapper>
-            <StockModalQuantityTitle>Quantity</StockModalQuantityTitle>
+            <StockModalQuantityTitle>{t('Quantity')}</StockModalQuantityTitle>
             <StockModalQuantityInput
               type="number"
               min={100}
@@ -252,11 +255,11 @@ const Stock = () => {
             </StockModalQuantityTotal>
           </StockModalQuantityWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>Current balance:</StockModalBalanceTitle>
-            <StockModalBalanceNumber>{updated.balance}</StockModalBalanceNumber>
+            <StockModalBalanceTitle>{t('Current balance:')}</StockModalBalanceTitle>
+            <StockModalBalanceNumber>{updated.balance}$</StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>Current shares:</StockModalBalanceTitle>
+            <StockModalBalanceTitle>{t('Current shares:')}</StockModalBalanceTitle>
             <StockModalBalanceNumber>{currentShares}</StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalButton onClick={handleBuy}>Buy</StockModalButton>
@@ -270,7 +273,7 @@ const Stock = () => {
       return (
         <StockModalPopupWrapper>
           <StockModalPopupText>
-            You've succesfully sold {quantity} shares of {symbol} at{" "}
+            {t('Youve succesfully sold')} {quantity} {t('shares of')} {symbol} {t('at')} {" "}
             {stockData[0].c.toFixed(2)}$
           </StockModalPopupText>
           <StockModalPopupButton
@@ -278,7 +281,7 @@ const Stock = () => {
               window.location.reload();
             }}
           >
-            Back to {symbol}
+            {t('Back to')} {symbol}
           </StockModalPopupButton>
         </StockModalPopupWrapper>
       );
@@ -286,11 +289,11 @@ const Stock = () => {
       return (
         <StockModalWrapper>
           <StockModalInfo>
-            <StockModalTitle>Sell {symbol}</StockModalTitle>
+            <StockModalTitle>{t('Sell')} {symbol}</StockModalTitle>
             <StockModalPrice>{stockData[0].c.toFixed(2)}$</StockModalPrice>
           </StockModalInfo>
           <StockModalQuantityWrapper>
-            <StockModalQuantityTitle>Quantity</StockModalQuantityTitle>
+            <StockModalQuantityTitle>{t('Quantity')}</StockModalQuantityTitle>
             <StockModalQuantityInput
               type="number"
               min={100}
@@ -304,11 +307,11 @@ const Stock = () => {
             </StockModalQuantityTotal>
           </StockModalQuantityWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>Current balance:</StockModalBalanceTitle>
-            <StockModalBalanceNumber>{updated.balance}</StockModalBalanceNumber>
+            <StockModalBalanceTitle>{t('Current balance:')}</StockModalBalanceTitle>
+            <StockModalBalanceNumber>{updated.balance}$</StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>Current shares:</StockModalBalanceTitle>
+            <StockModalBalanceTitle>{t('Current shares:')}</StockModalBalanceTitle>
             <StockModalBalanceNumber>{currentShares}</StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalButton onClick={handleSell}>Buy</StockModalButton>
@@ -360,7 +363,7 @@ const Stock = () => {
                       : stockData[0].dp}
                     %
                   </StockPercent>
-                  <StockBuyButton onClick={toggleModalBuy}>BUY</StockBuyButton>
+                  <StockBuyButton onClick={toggleModalBuy}>{t('BUY')}</StockBuyButton>
                   <StockModal
                     isOpen={isOpenBuy}
                     onBackgroundClick={toggleModalBuy}
@@ -369,7 +372,7 @@ const Stock = () => {
                     {popupBuy()}
                   </StockModal>
                   <StockSellButton onClick={toggleModalSell}>
-                    SELL
+                    {t('SELL')}
                   </StockSellButton>
                   <StockModal
                     isOpen={isOpenSell}

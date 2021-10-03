@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { Button } from "../ButtonElement";
 import {
   InfoContainer,
@@ -31,6 +32,8 @@ const InfoSection = ({
   dark,
   dark2,
 }) => {
+  const { t, i18n } = useTranslation();
+
   return (
     <>
       <InfoContainer lightBg={lightBg} id={id}>

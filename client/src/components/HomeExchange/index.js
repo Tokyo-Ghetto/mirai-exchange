@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HomeContainer,
   HomeWrapper,
@@ -12,10 +12,32 @@ import {
   HomeCardPriceWrapper,
   Test,
 } from "./HomeExchangeElements";
-import { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import {lightTheme, darkTheme} from './../../themes'
 
 const HomeExchange = () => {
-  const stockList = ["AMGN", "AAPL", "MSFT", "GOOG", "AMZN", "FB", "CTAS", "TSLA", "MCHP", "BBIG", "NVDA", "JPM", "V", "IDXX"];
+  const stockList = [
+    "AMGN",
+    "AAPL",
+    "MSFT",
+    "GOOG",
+    "AMZN",
+    "FB",
+    "CTAS",
+    "TSLA",
+    "MCHP",
+    "BBIG",
+    "NVDA",
+    "JPM",
+    "V",
+    "IDXX",
+  ];
+
+  const [theme, setTheme] = useState("dark");
+
+  const themeToggler = () => {
+    theme === "light" ? setTheme("dark") : setTheme("light");
+  };
 
   const GetStockCard = (stock) => {
     const [stockData, setStockData] = useState("...");
@@ -43,33 +65,37 @@ const HomeExchange = () => {
     }, []);
 
     return (
-      <HomeCard id={stock} to={`/stocks/${stock}`}>
-        <HomeCardSymbol>{stockData[1].ticker}</HomeCardSymbol>
-        <HomeCardPriceWrapper>
-          <HomeCardPrice>{(stockData[0].c) ? stockData[0].c.toFixed(2) : stockData[0].c}</HomeCardPrice>
-          <HomeCardPercent percentColor={stockData[0].dp >= 0 ? true : false}>
-            {(stockData[0].dp) ? stockData[0].dp.toFixed(2) : stockData[0].dp}%
-          </HomeCardPercent>
-        </HomeCardPriceWrapper>
-        <HomeCardName>{stockData[1].name}</HomeCardName>
-      </HomeCard>
+      <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+        <HomeCard id={stock} to={`/stocks/${stock}`}>
+          <HomeCardSymbol>{stockData[1].ticker}</HomeCardSymbol>
+          <HomeCardPriceWrapper>
+            <HomeCardPrice>
+              {stockData[0].c ? stockData[0].c.toFixed(2) : stockData[0].c}
+            </HomeCardPrice>
+            <HomeCardPercent percentColor={stockData[0].dp >= 0 ? true : false}>
+              {stockData[0].dp ? stockData[0].dp.toFixed(2) : stockData[0].dp}%
+            </HomeCardPercent>
+          </HomeCardPriceWrapper>
+          <HomeCardName>{stockData[1].name}</HomeCardName>
+        </HomeCard>
+      </ThemeProvider>
     );
   };
 
-  let prueba = [];
+  let cardsArray = [];
   const GetCards = () => {
     for (let i = 0; i <= stockList.length - 1; i++) {
-      prueba.push(GetStockCard(stockList[i]));
+      cardsArray.push(GetStockCard(stockList[i]));
     }
-    return prueba;
+    return cardsArray;
   };
 
   return (
-    <>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <HomeContainer>
         <HomeWrapper>{GetCards()}</HomeWrapper>
       </HomeContainer>
-    </>
+    </ThemeProvider>
   );
 };
 

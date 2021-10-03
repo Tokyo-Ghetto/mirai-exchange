@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import {
   HeroContainer,
   HeroBG,
@@ -14,6 +15,8 @@ import Video from "../../videos/video.mp4";
 import { Button } from "../ButtonElement";
 
 const HeroSection = () => {
+  const { t, i18n } = useTranslation();
+
   const [hover, setHover] = useState(false);
 
   const onHover = () => {
@@ -26,10 +29,10 @@ const HeroSection = () => {
         <VideoBG autoPlay loop muted src={Video} type="video/mp4" />
       </HeroBG>
       <HeroContent>
-        <HeroH1>Trading Made Easy</HeroH1>
+        <HeroH1>{t('Trading made easy')}</HeroH1>
         {/* Add an animation for Easy to change to Modern, Elegant, Worldwide, Secure */}
         <HeroP>
-          Sign up for a new account today and receive up to $50 in free stocks.
+          {t('Sign up for a new account today and receive up to $50 in free stocks.')}
         </HeroP>
         <HeroBtnWrapper>
           <Button
@@ -44,7 +47,7 @@ const HeroSection = () => {
             exact="true"
             offset={-80}
           >
-            Get started {hover ? <ArrowForward /> : <ArrowRight />}
+            {t('Get started')} {hover ? <ArrowForward /> : <ArrowRight />}
           </Button>
         </HeroBtnWrapper>
       </HeroContent>
