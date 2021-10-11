@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Line, defaults } from "react-chartjs-2";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "./../../themes";
+import { lightTheme, darkTheme } from "../../themes";
 
 defaults.plugins.legend = false;
 
-const StockPageChart = (time, data) => {
+const StockPageChartDark = (time, data) => {
   // const [theme, setTheme] = useState("light");
 
   return (
@@ -24,15 +24,15 @@ const StockPageChart = (time, data) => {
         width={300}
         options={{
           maintainAspectRatio: false,
-          borderColor: "black",
+          borderColor: "white",
           pointRadius: "0",
           hoverPointRadius: "5",
-          pointHoverBackgroundColor: "white",
-          pointHoverBorderColor: "black",
+          pointHoverBackgroundColor: "black",
+          pointHoverBorderColor: "white",
           pointHoverBorderWidth: "4",
           plugins: {
             tooltip: {
-              backgroundColor: "rgba(0,0,0,0.5)",
+              backgroundColor: "rgba(255,255,255,0.5)",
               position: "nearest",
               displayColors: false,
               titleAlign: "center",
@@ -78,4 +78,4 @@ const StockPageChart = (time, data) => {
     </>
   );
 };
-export default StockPageChart;
+export default StockPageChartDark;

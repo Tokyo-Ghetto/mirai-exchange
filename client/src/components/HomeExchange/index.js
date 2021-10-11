@@ -33,11 +33,7 @@ const HomeExchange = () => {
     "IDXX",
   ];
 
-  const [theme, setTheme] = useState("dark");
-
-  const themeToggler = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light");
-  };
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const GetStockCard = (stock) => {
     const [stockData, setStockData] = useState("...");

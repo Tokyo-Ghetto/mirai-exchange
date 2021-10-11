@@ -95,6 +95,7 @@ export const NavLinks = styled(LinkScroll)`
 export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
+  margin: 0 0.5rem;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -119,3 +120,17 @@ export const NavBtnLink = styled(LinkRouter)`
     color: #010606;
   }
 `;
+
+export const NavBtnTheme = styled.button`
+  border: 1px solid white;
+  padding: 0.25rem;
+  text-decoration: none;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+`
+
+export const NavBtnContainer = styled.div`
+display: flex;
+flex-direction: row;
+`

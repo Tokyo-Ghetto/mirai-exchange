@@ -48,7 +48,7 @@ const Footer = () => {
               <FooterLink to="/signin">{t('Testimonials')}</FooterLink>
               <FooterLink to="/signin">{t('Careers')}</FooterLink>
               <FooterLink to="/signin">{t('Investors')}</FooterLink>
-              <FooterLink to="/signin">{t('Terms of Service')}</FooterLink>
+              <FooterLink to="/legal">{t('Terms of Service')}</FooterLink>
             </FooterLinkItems>
           </FooterLinksWrapper>
           <FooterLinksWrapper>

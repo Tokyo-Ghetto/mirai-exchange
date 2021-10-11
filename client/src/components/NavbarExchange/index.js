@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { animateScroll as scroll } from "react-scroll";
 import {
   Nav,
@@ -12,15 +12,27 @@ import {
   NavBtn,
   NavBtnLink,
   NavLogoImg,
+  NavBtnTheme,
+  NavBtnContainer
 } from "./NavBarElements";
 import { FaBars } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import MiraiLogo from "../../images/logo.png";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./../../themes";
 
 const NavbarExchange = ({ toggle }) => {
   const { t, i18n } = useTranslation();
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const toggleHome = () => {
     scroll.scrollToTop();
+  };
+
+  const themeToggler = () => {
+    const updatedTheme = theme === "light" ? "dark" : "light";
+    setTheme(updatedTheme);
+    localStorage.setItem("theme", updatedTheme);
+    window.location.reload();
   };
 
   return (
@@ -84,6 +96,7 @@ const NavbarExchange = ({ toggle }) => {
                 </NavLinks>
               </NavItem> */}
             </NavMenu>
+            <NavBtnContainer>
             <NavBtn>
               <NavBtnLink
                 to="/profile"
@@ -93,9 +106,15 @@ const NavbarExchange = ({ toggle }) => {
                 exact="true"
                 offset={-80}
               >
-                {t('Profile')}
+                {t("Profile")}
               </NavBtnLink>
             </NavBtn>
+            <NavBtn>
+              <NavBtnTheme onClick={() => themeToggler()}>
+              {t('CHANGE THEME')}
+              </NavBtnTheme>
+            </NavBtn>
+            </NavBtnContainer>
           </NavbarContainer>
         </Nav>
       </IconContext.Provider>

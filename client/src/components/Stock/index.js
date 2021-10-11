@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import StockPageChart from "../StockPageChart/index";
+import StockPageChartDark from "../StockPageChartDark/index";
 import Modal from "styled-react-modal";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./../../themes";
 import {
   StockContainer,
   StockWrapper,
@@ -44,7 +47,7 @@ import {
 import bullGIF from "../../images/bull.gif";
 
 const Stock = () => {
-    const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const { t, i18n } = useTranslation();
   const stockList = [];
   const { symbol } = useParams();
@@ -136,13 +139,12 @@ const Stock = () => {
       const indexStock = updated.portfolio.findIndex(
         (e) => e[symbol] !== undefined
       );
-      if(updated.portfolio[indexStock]){
+      if (updated.portfolio[indexStock]) {
         setCurrentShares(updated.portfolio[indexStock][symbol]);
-        console.log((updated.portfolio[indexStock][symbol]))
-      }else{
-        setCurrentShares(0)
+        console.log(updated.portfolio[indexStock][symbol]);
+      } else {
+        setCurrentShares(0);
       }
-
     }
   }, [updated]);
 
@@ -221,15 +223,15 @@ const Stock = () => {
       return (
         <StockModalPopupWrapper>
           <StockModalPopupText>
-          {t('Youve succesfully purchased')} {quantity} {t('shares of')} {symbol} {t('at')} {" "}
-            {stockData[0].c.toFixed(2)}$
+            {t("Youve succesfully purchased")} {quantity} {t("shares of")}{" "}
+            {symbol} {t("at")} {stockData[0].c.toFixed(2)}$
           </StockModalPopupText>
           <StockModalPopupButton
             onClick={function () {
               window.location.reload();
             }}
           >
-            {t('Back to')} {symbol}
+            {t("Back to")} {symbol}
           </StockModalPopupButton>
         </StockModalPopupWrapper>
       );
@@ -237,11 +239,13 @@ const Stock = () => {
       return (
         <StockModalWrapper>
           <StockModalInfo>
-            <StockModalTitle>{t('Buy')} {symbol}</StockModalTitle>
+            <StockModalTitle>
+              {t("Buy")} {symbol}
+            </StockModalTitle>
             <StockModalPrice>{stockData[0].c.toFixed(2)}$</StockModalPrice>
           </StockModalInfo>
           <StockModalQuantityWrapper>
-            <StockModalQuantityTitle>{t('Quantity')}</StockModalQuantityTitle>
+            <StockModalQuantityTitle>{t("Quantity")}</StockModalQuantityTitle>
             <StockModalQuantityInput
               type="number"
               min={100}
@@ -255,11 +259,17 @@ const Stock = () => {
             </StockModalQuantityTotal>
           </StockModalQuantityWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>{t('Current balance:')}</StockModalBalanceTitle>
-            <StockModalBalanceNumber>{updated.balance}$</StockModalBalanceNumber>
+            <StockModalBalanceTitle>
+              {t("Current balance:")}
+            </StockModalBalanceTitle>
+            <StockModalBalanceNumber>
+              {updated.balance}$
+            </StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>{t('Current shares:')}</StockModalBalanceTitle>
+            <StockModalBalanceTitle>
+              {t("Current shares:")}
+            </StockModalBalanceTitle>
             <StockModalBalanceNumber>{currentShares}</StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalButton onClick={handleBuy}>Buy</StockModalButton>
@@ -273,15 +283,15 @@ const Stock = () => {
       return (
         <StockModalPopupWrapper>
           <StockModalPopupText>
-            {t('Youve succesfully sold')} {quantity} {t('shares of')} {symbol} {t('at')} {" "}
-            {stockData[0].c.toFixed(2)}$
+            {t("Youve succesfully sold")} {quantity} {t("shares of")} {symbol}{" "}
+            {t("at")} {stockData[0].c.toFixed(2)}$
           </StockModalPopupText>
           <StockModalPopupButton
             onClick={function () {
               window.location.reload();
             }}
           >
-            {t('Back to')} {symbol}
+            {t("Back to")} {symbol}
           </StockModalPopupButton>
         </StockModalPopupWrapper>
       );
@@ -289,11 +299,13 @@ const Stock = () => {
       return (
         <StockModalWrapper>
           <StockModalInfo>
-            <StockModalTitle>{t('Sell')} {symbol}</StockModalTitle>
+            <StockModalTitle>
+              {t("Sell")} {symbol}
+            </StockModalTitle>
             <StockModalPrice>{stockData[0].c.toFixed(2)}$</StockModalPrice>
           </StockModalInfo>
           <StockModalQuantityWrapper>
-            <StockModalQuantityTitle>{t('Quantity')}</StockModalQuantityTitle>
+            <StockModalQuantityTitle>{t("Quantity")}</StockModalQuantityTitle>
             <StockModalQuantityInput
               type="number"
               min={100}
@@ -307,11 +319,17 @@ const Stock = () => {
             </StockModalQuantityTotal>
           </StockModalQuantityWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>{t('Current balance:')}</StockModalBalanceTitle>
-            <StockModalBalanceNumber>{updated.balance}$</StockModalBalanceNumber>
+            <StockModalBalanceTitle>
+              {t("Current balance:")}
+            </StockModalBalanceTitle>
+            <StockModalBalanceNumber>
+              {updated.balance}$
+            </StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalBalanceWrapper>
-            <StockModalBalanceTitle>{t('Current shares:')}</StockModalBalanceTitle>
+            <StockModalBalanceTitle>
+              {t("Current shares:")}
+            </StockModalBalanceTitle>
             <StockModalBalanceNumber>{currentShares}</StockModalBalanceNumber>
           </StockModalBalanceWrapper>
           <StockModalButton onClick={handleSell}>Buy</StockModalButton>
@@ -334,95 +352,200 @@ const Stock = () => {
     convertedEpoch = convertedEpoch.map(function (element) {
       return new Date(element).toISOString().slice(0, 10);
     });
-
-    return (
-      <React.Fragment>
-        <StockContainer>
-          <StockWrapper>
-            <StockTitleContainer>
-              <StockTitle>{stockData[1]["ticker"]}</StockTitle>
-              <StockSubtitle>{stockData[1]["name"]}</StockSubtitle>
-            </StockTitleContainer>
-            <StockBodyContainer>
-              <StockChart>
-                {StockPageChart(convertedEpoch, candleData[0].c)}
-              </StockChart>
-              <StockTradeContainer>
-                <StockTradeWrapper>
-                  <StockPrice>
-                    {stockData[0].c
-                      ? stockData[0].c.toFixed(2)
-                      : stockData[0].c}
-                    $
-                  </StockPrice>
-                  <StockPercent
-                    percentColor={stockData[0].dp >= 0 ? true : false}
-                  >
-                    {stockData[0].dp
-                      ? stockData[0].dp.toFixed(2)
-                      : stockData[0].dp}
-                    %
-                  </StockPercent>
-                  <StockBuyButton onClick={toggleModalBuy}>{t('BUY')}</StockBuyButton>
-                  <StockModal
-                    isOpen={isOpenBuy}
-                    onBackgroundClick={toggleModalBuy}
-                    onEscapeKeydown={toggleModalBuy}
-                  >
-                    {popupBuy()}
-                  </StockModal>
-                  <StockSellButton onClick={toggleModalSell}>
-                    {t('SELL')}
-                  </StockSellButton>
-                  <StockModal
-                    isOpen={isOpenSell}
-                    onBackgroundClick={toggleModalSell}
-                    onEscapeKeydown={toggleModalSell}
-                  >
-                    {popupSell()}
-                  </StockModal>
-                </StockTradeWrapper>
-              </StockTradeContainer>
-            </StockBodyContainer>
-            <StockDetailContainer>
-              <StockDetailWrapper>
-                <StockDetailTitle>Market Cap</StockDetailTitle>
-                <StockDetailSubtitle>
-                  {formatMarketCap(
-                    stockData[0].c * stockData[1].shareOutstanding * 1000000
-                  )}
-                </StockDetailSubtitle>
-              </StockDetailWrapper>
-              <StockDetailWrapper>
-                <StockDetailTitle>52 week Low</StockDetailTitle>
-                <StockDetailSubtitle>
-                  {stockData[2].metric["52WeekLow"]}$
-                </StockDetailSubtitle>
-              </StockDetailWrapper>
-              <StockDetailWrapper>
-                <StockDetailTitle>52 week High</StockDetailTitle>
-                <StockDetailSubtitle>
-                  {stockData[2].metric["52WeekHigh"]}$
-                </StockDetailSubtitle>
-              </StockDetailWrapper>
-              <StockDetailWrapper>
-                <StockDetailTitle>YTD Change</StockDetailTitle>
-                <StockDetailSubtitle>
-                  {stockData[2].metric.yearToDatePriceReturnDaily.toFixed(2)}%
-                </StockDetailSubtitle>
-              </StockDetailWrapper>
-              <StockDetailWrapper>
-                <StockDetailTitle>Avg. Volume</StockDetailTitle>
-                <StockDetailSubtitle>
-                  {stockData[2].metric["10DayAverageTradingVolume"].toFixed(2)}M
-                </StockDetailSubtitle>
-              </StockDetailWrapper>
-            </StockDetailContainer>
-            {/* <Test>{GetStockCard("AAPL")}</Test> */}
-          </StockWrapper>
-        </StockContainer>
-      </React.Fragment>
-    );
+    if(theme === "light"){
+      return (
+        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+          <React.Fragment>
+            <StockContainer>
+              <StockWrapper>
+                <StockTitleContainer>
+                  <StockTitle>{stockData[1]["ticker"]}</StockTitle>
+                  <StockSubtitle>{stockData[1]["name"]}</StockSubtitle>
+                </StockTitleContainer>
+                <StockBodyContainer>
+                  <StockChart>
+                    {StockPageChart(convertedEpoch, candleData[0].c)}
+                  </StockChart>
+                  <StockTradeContainer>
+                    <StockTradeWrapper>
+                      <StockPrice>
+                        {stockData[0].c
+                          ? stockData[0].c.toFixed(2)
+                          : stockData[0].c}
+                        $
+                      </StockPrice>
+                      <StockPercent
+                        percentColor={stockData[0].dp >= 0 ? true : false}
+                      >
+                        {stockData[0].dp
+                          ? stockData[0].dp.toFixed(2)
+                          : stockData[0].dp}
+                        %
+                      </StockPercent>
+                      <StockBuyButton onClick={toggleModalBuy}>
+                        {t("BUY")}
+                      </StockBuyButton>
+                      <StockModal
+                        isOpen={isOpenBuy}
+                        onBackgroundClick={toggleModalBuy}
+                        onEscapeKeydown={toggleModalBuy}
+                      >
+                        {popupBuy()}
+                      </StockModal>
+                      <StockSellButton onClick={toggleModalSell}>
+                        {t("SELL")}
+                      </StockSellButton>
+                      <StockModal
+                        isOpen={isOpenSell}
+                        onBackgroundClick={toggleModalSell}
+                        onEscapeKeydown={toggleModalSell}
+                      >
+                        {popupSell()}
+                      </StockModal>
+                    </StockTradeWrapper>
+                  </StockTradeContainer>
+                </StockBodyContainer>
+                <StockDetailContainer>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>Market Cap</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {formatMarketCap(
+                        stockData[0].c * stockData[1].shareOutstanding * 1000000
+                      )}
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>52 week Low</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric["52WeekLow"]}$
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>52 week High</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric["52WeekHigh"]}$
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>YTD Change</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric.yearToDatePriceReturnDaily.toFixed(2)}%
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>Avg. Volume</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric["10DayAverageTradingVolume"].toFixed(
+                        2
+                      )}
+                      M
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                </StockDetailContainer>
+                {/* <Test>{GetStockCard("AAPL")}</Test> */}
+              </StockWrapper>
+            </StockContainer>
+          </React.Fragment>
+        </ThemeProvider>
+      );
+    }else{
+      return (
+        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+          <React.Fragment>
+            <StockContainer>
+              <StockWrapper>
+                <StockTitleContainer>
+                  <StockTitle>{stockData[1]["ticker"]}</StockTitle>
+                  <StockSubtitle>{stockData[1]["name"]}</StockSubtitle>
+                </StockTitleContainer>
+                <StockBodyContainer>
+                  <StockChart>
+                    {StockPageChartDark(convertedEpoch, candleData[0].c)}
+                  </StockChart>
+                  <StockTradeContainer>
+                    <StockTradeWrapper>
+                      <StockPrice>
+                        {stockData[0].c
+                          ? stockData[0].c.toFixed(2)
+                          : stockData[0].c}
+                        $
+                      </StockPrice>
+                      <StockPercent
+                        percentColor={stockData[0].dp >= 0 ? true : false}
+                      >
+                        {stockData[0].dp
+                          ? stockData[0].dp.toFixed(2)
+                          : stockData[0].dp}
+                        %
+                      </StockPercent>
+                      <StockBuyButton onClick={toggleModalBuy}>
+                        {t("BUY")}
+                      </StockBuyButton>
+                      <StockModal
+                        isOpen={isOpenBuy}
+                        onBackgroundClick={toggleModalBuy}
+                        onEscapeKeydown={toggleModalBuy}
+                      >
+                        {popupBuy()}
+                      </StockModal>
+                      <StockSellButton onClick={toggleModalSell}>
+                        {t("SELL")}
+                      </StockSellButton>
+                      <StockModal
+                        isOpen={isOpenSell}
+                        onBackgroundClick={toggleModalSell}
+                        onEscapeKeydown={toggleModalSell}
+                      >
+                        {popupSell()}
+                      </StockModal>
+                    </StockTradeWrapper>
+                  </StockTradeContainer>
+                </StockBodyContainer>
+                <StockDetailContainer>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>Market Cap</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {formatMarketCap(
+                        stockData[0].c * stockData[1].shareOutstanding * 1000000
+                      )}
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>52 week Low</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric["52WeekLow"]}$
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>52 week High</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric["52WeekHigh"]}$
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>YTD Change</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric.yearToDatePriceReturnDaily.toFixed(2)}%
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                  <StockDetailWrapper>
+                    <StockDetailTitle>Avg. Volume</StockDetailTitle>
+                    <StockDetailSubtitle>
+                      {stockData[2].metric["10DayAverageTradingVolume"].toFixed(
+                        2
+                      )}
+                      M
+                    </StockDetailSubtitle>
+                  </StockDetailWrapper>
+                </StockDetailContainer>
+                {/* <Test>{GetStockCard("AAPL")}</Test> */}
+              </StockWrapper>
+            </StockContainer>
+          </React.Fragment>
+        </ThemeProvider>
+      )
+    }
+    
   }
 };
 

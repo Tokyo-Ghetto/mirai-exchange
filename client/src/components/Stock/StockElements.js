@@ -131,7 +131,8 @@ export const StockSellButton = styled.button`
 export const StockModal = Modal.styled`
   width: 23rem;
   height: 23rem;
-  background-color: white;
+  background-color: ${(props) => props.theme.secondaryBackgroundColor};
+  color: ${(props) => props.theme.fontColor};
 `;
 
 export const StockModalWrapper = styled.div`
